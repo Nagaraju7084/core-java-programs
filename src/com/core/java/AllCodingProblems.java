@@ -35,10 +35,37 @@ public class AllCodingProblems {
 		//findTheLeaderElementIntheArray();
 		//findNonRepeatedCharacterInAString();
 		//findNumberStartwithOneInGivenIntList();
-		attachMessageToRandomNumberAndReturn();
+		//attachMessageToRandomNumberAndReturn();
+		//testingIntegersRange();
+		//findFirstNonRepeatedCharacterInStringUsingJava8Stream();
 		
 	}
 	
+	private static void findFirstNonRepeatedCharacterInStringUsingJava8Stream() {
+		String str = "aabbbccd";
+		Character firstNonRepeatedChar = str.chars().mapToObj(ch -> (char)ch)
+				.filter(ch -> str.indexOf(ch) == str.lastIndexOf(ch)).findFirst().get();
+		System.out.println(firstNonRepeatedChar);
+	}
+
+	private static void testingIntegersRange() {
+		Integer num1 = 100;
+		Integer num2 = 100;
+		Integer num3 = 500;
+		Integer num4 = 500;
+		
+		if(num1 == num2) {
+			System.out.println("num1 == num2");
+		}else {
+			System.out.println("num1 != num2");
+		}
+		if(num3 == num4) {
+			System.out.println("num3 == num4");
+		}else {
+			System.out.println("num3 != num4");
+		}
+	}
+
 	private static void attachMessageToRandomNumberAndReturn() {
 		String message = "hello world";
 		int secreteCode = generateSecreteCode();
