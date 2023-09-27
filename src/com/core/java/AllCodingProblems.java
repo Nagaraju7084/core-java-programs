@@ -38,9 +38,79 @@ public class AllCodingProblems {
 		//attachMessageToRandomNumberAndReturn();
 		//testingIntegersRange();
 		//findFirstNonRepeatedCharacterInStringUsingJava8Stream();
+		cosecutiveElementsInArray76();
 		
 	}
 	
+	private static void cosecutiveElementsInArray76() {
+		int[] array = {1, 2 ,5, 0, 3, 6, 7};
+		//Arrays.sort(array);
+		System.out.println("before sorting elements in array : " + Arrays.toString(array));
+		sortArray(array);
+		System.out.println("after sorting elements in array : " + Arrays.toString(array));
+		//isConsecutiveArrayOneWay(array);
+		//isConsecutiveArraySecondWay(array);
+		usingJava8Stream(array);
+	}
+
+	private static void usingJava8Stream(int[] array) {
+		boolean consecutive = Arrays.stream(array)
+									.boxed()
+									.sorted()
+									.allMatch(i -> i.equals(array[i - array[0]]));
+		if(consecutive) {
+			System.out.println("elements are consecutive elements in array! " + consecutive);
+		}else {
+			System.out.println("elements are not consecutive elements in array! " + consecutive);
+		}
+	}
+
+	private static void isConsecutiveArraySecondWay(int[] array) {
+		boolean flag = false;
+		for(int i=0; i<array.length-1; i++) {
+			int firstElement = array[i];
+			int secondElement = array[i+1];
+			if((secondElement - firstElement) != 1) {
+				flag = false;
+			}
+		}
+		if(flag) {
+			System.out.println("elements are consecutive elements in array! " + flag);
+		}else {
+			System.out.println("elements are not consecutive elements in array! " + flag);
+		}
+	}
+
+	private static void sortArray(int[] array) {
+		for(int i=0; i<array.length -1; i++) {
+			for(int j=0; j<array.length-i-1; j++) {
+				if(array[j] > array[j+1]) {
+					int temp = array[j];
+					array[j] = array[j+1];
+					array[j+1] = temp;
+				}
+			}
+		}
+	}
+	
+	//bubble sort
+	private static void isConsecutiveArrayOneWay(int[] array) {
+		boolean flag = false;
+		for(int i=0; i<array.length-1; i++) {
+			if(array[i] != array[i+1]) {
+				flag = false;
+			}else {
+				flag = true;
+			}
+		}
+		
+		if(flag) {
+			System.out.println("elements are consecutive in array! " + flag);
+		}else {
+			System.out.println("elements are not consecutive in array! " + flag);
+		}
+	}
+
 	private static void findFirstNonRepeatedCharacterInStringUsingJava8Stream() {
 		String str = "aabbbccd";
 		Character firstNonRepeatedChar = str.chars().mapToObj(ch -> (char)ch)
