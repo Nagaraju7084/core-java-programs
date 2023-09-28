@@ -1,7 +1,5 @@
 package com.core.java;
 
-import java.util.Arrays;
-
 public class ArraySortAndSearch {
 
 	private static int searchArray(int[] arr, int key) {

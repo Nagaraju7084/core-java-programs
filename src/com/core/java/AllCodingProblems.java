@@ -2,6 +2,7 @@ package com.core.java;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -37,23 +39,77 @@ public class AllCodingProblems {
 		//findNumberStartwithOneInGivenIntList();
 		//attachMessageToRandomNumberAndReturn();
 		//testingIntegersRange();
-		//findFirstNonRepeatedCharacterInStringUsingJava8Stream();
-		cosecutiveElementsInArray76();
+		//cosecutiveElementsInArray76();
+		//findGapInArrayIntegerElements75();
+		findMaxOccurenceOfCharInString();
 		
 	}
 	
+	private static void findMaxOccurenceOfCharInString() {
+		String str = "nagaraju";
+		str.chars() //returns int stream
+		.mapToObj(ch -> (char)ch) //map each int stream to its character and finally it returns stream of characters
+		.collect(Collectors.groupingBy(Function.identity(), Collectors.counting())) //group characters by their identity and frequency and it will return Map<Character, Long>
+		.entrySet() //convert into Map.Entry and it will returns set of entries
+		.stream() // convert set of entries to stream of entries
+		.filter(entry -> entry.getValue() > 1) //filter the stream of entries and hold only those values where the value > 1 
+		.forEach(entry ->{ //for each entry that will execute repeated character
+			System.out.println("repeated character is " + entry.getKey());
+			System.out.println("repeated value is " + entry.getValue());
+		});
+	}
+
+	private static void findGapInArrayIntegerElements75() {
+		int[] array = {23, -2, 45, 38, 12, 4, 6};
+		sortArray(array);
+		//findGapUsingVariables(array);
+		//findGapUsingMath(array);
+		findGapUsingUsingJava8(array);
+	}
+
+	private static void findGapUsingUsingJava8(int[] array) {
+		// Find the largest gap among the given array elements using Java 8 stream
+		// Initialize the largest gap to a default value.
+		int largestGap = IntStream.range(0, array.length -1)
+				.map(i -> Math.abs(array[i+1] - array[i]))
+				.max()
+				.getAsInt();
+        System.out.println("The largest gap in the given array is: " + largestGap);
+	}
+
+	private static void findGapUsingMath(int[] array) {
+		int maxGap = 0;
+		for(int i=0; i<array.length-1; i++) {
+			maxGap = Math.max(array[i+1] - array[i], maxGap);
+		}
+		System.out.println("maxGap using Math " + maxGap);
+	}
+
+	private static void findGapUsingVariables(int[] array) {
+		int difference = 0;
+		int maxGap = 0;
+		for(int i=0; i<array.length-1; i++) {
+			difference = array[i+1] - array[i];
+			if(difference > maxGap) {
+				maxGap = difference;
+			}
+		}
+		System.out.println("maxGap " + maxGap);
+	}
+
 	private static void cosecutiveElementsInArray76() {
 		int[] array = {1, 2 ,5, 0, 3, 6, 7};
 		//Arrays.sort(array);
 		System.out.println("before sorting elements in array : " + Arrays.toString(array));
 		sortArray(array);
 		System.out.println("after sorting elements in array : " + Arrays.toString(array));
-		//isConsecutiveArrayOneWay(array);
+		isConsecutiveArrayOneWay(array);
 		//isConsecutiveArraySecondWay(array);
-		usingJava8Stream(array);
+		//usingJava8Stream(array);
 	}
 
 	private static void usingJava8Stream(int[] array) {
+		
 		boolean consecutive = Arrays.stream(array)
 									.boxed()
 									.sorted()
@@ -80,7 +136,8 @@ public class AllCodingProblems {
 			System.out.println("elements are not consecutive elements in array! " + flag);
 		}
 	}
-
+	
+	//bubble sort
 	private static void sortArray(int[] array) {
 		for(int i=0; i<array.length -1; i++) {
 			for(int j=0; j<array.length-i-1; j++) {
@@ -93,14 +150,11 @@ public class AllCodingProblems {
 		}
 	}
 	
-	//bubble sort
 	private static void isConsecutiveArrayOneWay(int[] array) {
 		boolean flag = false;
 		for(int i=0; i<array.length-1; i++) {
-			if(array[i] != array[i+1]) {
+			if(array[i]+1 != array[i+1]) {
 				flag = false;
-			}else {
-				flag = true;
 			}
 		}
 		
@@ -111,7 +165,7 @@ public class AllCodingProblems {
 		}
 	}
 
-	private static void findFirstNonRepeatedCharacterInStringUsingJava8Stream() {
+	private static void findFirstNonRepeatedCharacterInStringUsingStreamFirstWay() {
 		String str = "aabbbccd";
 		Character firstNonRepeatedChar = str.chars().mapToObj(ch -> (char)ch)
 				.filter(ch -> str.indexOf(ch) == str.lastIndexOf(ch)).findFirst().get();
@@ -195,11 +249,12 @@ public class AllCodingProblems {
 		
 		oneWayOfFindingNonRepeatedCharacterInAString();
 		//secondWayOfFindingNonRepeatedCharacterInAString();
-		//findNonRepeatedCharacterInAStringUsingStream();
+		//findFirstNonRepeatedCharacterInStringUsingStreamFirstWay();
+		//findFirstNonRepeatedCharacterInStringUsingStreamSecondWay();
 		
 	}
 	
-	private static void findNonRepeatedCharacterInAStringUsingStream() {
+	private static void findFirstNonRepeatedCharacterInStringUsingStreamSecondWay() {
 		String str="zzzzzbbbccccddehhhhiii";
 		
 		Map<Character, Long> charCount = str.chars()
