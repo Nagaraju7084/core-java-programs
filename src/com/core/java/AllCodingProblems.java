@@ -1,8 +1,8 @@
 package com.core.java;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -41,10 +41,98 @@ public class AllCodingProblems {
 		//testingIntegersRange();
 		//cosecutiveElementsInArray76();
 		//findGapInArrayIntegerElements75();
-		findMaxOccurenceOfCharInString();
+		//findMaxOccurenceOfCharInString();
+		//extractingPartOfStringFromAGivenString();
+		//reverseStringWords();
+		//reverseCharactersInAString();
+		lenghtOfStringWithoutUsingPredefinedMethod();
 		
 	}
 	
+	private static void lenghtOfStringWithoutUsingPredefinedMethod() {
+		String str = "abc";
+		int numberOfCharacters = 0;
+		//char[] chArr = str.toCharArray();
+		
+		/*
+		 * for(int i=0; i<3; i++) { if(str.charAt(i) != 0) { numberOfCharacters++; } } or
+		 */
+		/*
+		 * for(char c : chArr) { numberOfCharacters++; } or
+		 */
+		/*
+		 * try { for(int i=0; true; i++) { str.charAt(i); numberOfCharacters++; } or
+		 * }catch(Exception e) {}
+		 
+		try {
+			while(true) {
+				str.charAt(numberOfCharacters);
+				numberOfCharacters++;
+			}
+		}catch(Exception e) {}
+		System.out.println(numberOfCharacters);
+		*/
+		//using reflection api
+		Class<?> cls = str.getClass();
+		try {
+			Field field = cls.getDeclaredField("value");
+			field.setAccessible(true);
+			//byte[] byteArr = (byte[])field.get(str); //we will get re : classcastexception because
+			//from java 9 version onwords byte[] but upto 8 version its char[]
+			char[] byteArr = (char[])field.get(str);//upto java8 version char[], from 9 version its byte[]
+			System.out.println(byteArr.length);
+		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private static void reverseCharactersInAString() {
+		String str = "hai"; //output : iah
+		String result = "";
+		for(int i=str.length()-1; i>=0; i--) {
+			result = result + str.charAt(i);
+		}
+		System.out.println(result);
+	}
+
+	private static void reverseStringWords() {
+		String str = "How Are You?";
+		String[] words = str.split(" ");
+		System.out.println(words.length);
+		//String newStr = "";
+		//StringBuffer, if we use stringbuffer, every method is synchronized so lock and unlock will be occur, again
+		//performance issue, simply go with stringbuilder
+		StringBuilder newStr = new StringBuilder(); //construct empty stringbuilder object
+		for(int i=words.length -1; i>=0; i--) {
+			//newStr = newStr.concat(words[i] + " ");//for every concat operation, object is created
+			//performance issue, so use the below
+			//newStr = newStr + words[i] + " "; or
+			newStr.append(words[i]);
+			newStr.append(" ");
+			
+		}
+		//newStr.toString().trim(); //removing the space added after last word
+		System.out.println(newStr.toString().trim());
+	}
+
+	private static void extractingPartOfStringFromAGivenString() {
+		String original = "Nagaraju Kailasa";
+		String searchString = "Kail";
+		String originalLowerCase = original.toLowerCase();
+		String searStringLowerCase = searchString.toLowerCase();
+		int start = originalLowerCase.indexOf(searStringLowerCase);
+		System.out.println(start);
+		int end = originalLowerCase.lastIndexOf('l');
+		System.out.println(end);
+		
+		//if(originalLowerCase.contains(searStringLowerCase)) { // contains internally called indexOf(--), so
+		//calling indexOf(--) two times, two times execution takes place and hence we will get performance issue
+		if(start != -1) {
+			System.out.println(original.substring(start, end + 1));
+		}
+	}
+
 	private static void findMaxOccurenceOfCharInString() {
 		String str = "nagaraju";
 		str.chars() //returns int stream
@@ -136,16 +224,20 @@ public class AllCodingProblems {
 			System.out.println("elements are not consecutive elements in array! " + flag);
 		}
 	}
-	
 	//bubble sort
 	private static void sortArray(int[] array) {
-		for(int i=0; i<array.length -1; i++) {
-			for(int j=0; j<array.length-i-1; j++) {
+		for(int i=0; i<array.length -1; i++) { //outer for loop is for passes
+			int flag = 0;
+			for(int j=0; j<array.length-i-1; j++) { // inner for loop is for comparisions and for each iteration the passes will be decreased so here we taken -i
 				if(array[j] > array[j+1]) {
 					int temp = array[j];
 					array[j] = array[j+1];
 					array[j+1] = temp;
+					flag = 1;
 				}
+			}
+			if(flag == 0) {
+				break;
 			}
 		}
 	}
