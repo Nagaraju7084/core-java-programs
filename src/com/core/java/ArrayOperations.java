@@ -176,6 +176,33 @@ public class ArrayOperations {
 			}
 		}
 	}
+	
+	//override toString method for printing array/collection elements
+	@Override
+	public String toString() {
+		
+		if(size == 0)
+			return "[]";
+		//convert array to String
+		//copy or append each element from the array to StringBuilder object becuase
+		//String is immutable, each addition/modification every String object will be created it leads to performance issue
+		//StringBuffer is synchronized for each and every operation lock and unlock is required and hence StringBuilder is best to achieve this conversion
+		StringBuilder builder = new StringBuilder();
+		builder.append("[");
+		
+		for(int i=0; i<size; i++) {
+			builder.append(array[i]);
+			builder.append(", ");
+		}
+		
+		int start = builder.lastIndexOf(", ");
+		int end = start + 2;
+		builder.delete(start, end); //start is inclusive and end is exclusive and hence 2 is taken here
+		
+		builder.append("]");
+		
+		return builder.toString();
+	}
 	public void clean() {
 		array = null;
 	}
