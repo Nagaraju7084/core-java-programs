@@ -6,9 +6,20 @@ public class ArrayOrCollectionOperations {
 	private Object[] elementData;
 	private int size;
 	
+	//custom hashmap as key and value
+
+	private Object[] keys;
+	private Object[] values;
+	
+	private int tableSize;
+	
 	public ArrayOrCollectionOperations() {
 		elementData = new Object[10];
 		size = 0;
+		
+		keys = new Object[10];
+		values = new Object[10];
+		tableSize = 0;
 	}
 	
 	public void add(Object obj) {
@@ -21,19 +32,45 @@ public class ArrayOrCollectionOperations {
 		return elementData.length;
 	}
 	
+	public int tableCapacity() {
+		return keys.length;
+	}
+	
 	public int size() {
 		return size;
 	}
-
+	
+	public int tableSize() {
+		return tableSize;
+	}
+	
 	private void grow() {
 		
-		Object[] nextArray = new Object[capacity() * 2];
+		int newCapacity = capacity() * 2;
+		
+		Object[] nextArray = new Object[newCapacity];
 		
 		for(int i=0; i<elementData.length; i++) {
 			nextArray[i] = elementData[i];
 		}
 		
 		elementData = nextArray;
+		
+	}
+	
+	private void tableGrow() {
+		
+		int newCapacity = capacity() * 2;
+		
+		Object[] keyNextArray = new Object[newCapacity];
+		Object[] valueNextArray = new Object[newCapacity];
+		
+		for(int i=0; i<keys.length; i++) {
+			keyNextArray[i] = keys[i];
+			valueNextArray[i] = values[i];
+		}
+		keys = keyNextArray;
+		values = valueNextArray;
 	}
 
 	private void customArrayCopy(int[] sourceArray, int[] destinationArray) {
@@ -75,6 +112,27 @@ public class ArrayOrCollectionOperations {
 		builder.delete(start, end); //start is inclusive and end is exclusive and hence 2 is taken here
 		
 		builder.append("]");
+		
+		return builder.toString();
+	}
+	
+	public String displayTable() {
+		if(size == 0)
+			return "{}";
+		
+		StringBuilder builder = new StringBuilder();
+		builder.append("{");
+		
+		for(int i=0; i<size; i++) {
+			builder.append(keys[i]+"="+values[i]);
+			builder.append(", ");
+		}
+		
+		int start = builder.lastIndexOf(", ");
+		int end = start + 2;
+		builder.delete(start, end);
+		
+		builder.append("}");
 		
 		return builder.toString();
 	}
@@ -188,6 +246,16 @@ public class ArrayOrCollectionOperations {
 		return oldObject;
 	}
 	
+	public void put(Object key, Object value) {
+		if(tableSize() == tableCapacity())
+			tableGrow();
+		
+		keys[tableSize] = key;
+		values[tableSize] = value;
+		
+		tableSize++;
+	}
+	
 	public void clean() {
 		elementData = null;
 	}
@@ -256,6 +324,29 @@ public class ArrayOrCollectionOperations {
 		System.out.println(arrayObj.set(1, 10));
 		System.out.println(arrayObj.set(4, true));
 		System.out.println(arrayObj);
+		
+		//create table or map object
+		//its created as above(Obejct creation time)
+		
+		//print capacity and size of the elements
+		System.out.println("table capacity : "+arrayObj.tableCapacity());
+		System.out.println(arrayObj.tableSize());
+		//add entries
+		arrayObj.put("a", 1);
+		arrayObj.put("b", 2);
+		arrayObj.put(5, "c");
+		arrayObj.put(6.7, 'a');
+		arrayObj.put(true, 3);
+		arrayObj.put(null, 6);
+		arrayObj.put("a", 7);
+		arrayObj.put(5, 8);
+		arrayObj.put(new Ex(5,6), new Ex(7,8));
+		arrayObj.put(new Ex(5,6), new Ex(7,8));
+		//test capacity growing or not
+		System.out.println("table capacity : "+arrayObj.tableCapacity());
+		System.out.println("table size : "+arrayObj.tableSize());
+		System.out.println("elements in a table : "+arrayObj.displayTable());
+		//again print elements
 	}
 
 }

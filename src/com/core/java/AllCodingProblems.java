@@ -46,10 +46,28 @@ public class AllCodingProblems {
 		//reverseStringWords();
 		//reverseCharactersInAString();
 		//lenghtOfStringWithoutUsingPredefinedMethod();
-		findUniqueWords();
+		//findUniqueWords();
+		findMissingCharacterInString();
 		
 	}
 	
+	private static void findMissingCharacterInString() {
+		String actual = "apple";
+		String check = "aple";
+		
+		findMissingCharacterFromGivenStrings(actual, check);
+		
+	}
+
+	private static void findMissingCharacterFromGivenStrings(String actual, String check) {
+		for(int i=0; i<actual.length(); i++) {
+			if(actual.charAt(i) != check.charAt(i)) {
+				System.out.println("missing character is : "+actual.charAt(i));
+				break;
+			}
+		}
+	}
+
 	private static void findUniqueWords() {
 		String[] duplicateWordsArray = {"xyz","lmn","xyz","aaa"};
 		String[] uniqueWordsArray = new String[duplicateWordsArray.length];
