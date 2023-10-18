@@ -10,3 +10,5 @@ bin/com/core/java/ArrayOperations.class
 bin/com/core/java/Record.class
 *.class
 *.class
+*.class
+*.class

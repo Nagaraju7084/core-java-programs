@@ -1,7 +1,10 @@
 package com.core.java;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
+//triplets meaning 3 elements whose sum is equal to given number
 public class TripletsOfSumElementsArray74 {
 
 	public static void main(String[] args) {
@@ -130,5 +133,5 @@ public class TripletsOfSumElementsArray74 {
 		System.out.println("sorted array is : "+Arrays.toString(arr));
 		return arr;
 	}
-
+	
 }

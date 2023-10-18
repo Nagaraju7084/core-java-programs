@@ -45,8 +45,54 @@ public class AllCodingProblems {
 		//extractingPartOfStringFromAGivenString();
 		//reverseStringWords();
 		//reverseCharactersInAString();
-		lenghtOfStringWithoutUsingPredefinedMethod();
+		//lenghtOfStringWithoutUsingPredefinedMethod();
+		findUniqueWords();
 		
+	}
+	
+	private static void findUniqueWords() {
+		String[] duplicateWordsArray = {"xyz","lmn","xyz","aaa"};
+		String[] uniqueWordsArray = new String[duplicateWordsArray.length];
+		
+		int uniqueCount = 0;
+		String wordToRemove = "";
+		for(int i=0; i<duplicateWordsArray.length; i++) {
+			String currentWord = duplicateWordsArray[i];
+			boolean isUnique = true;
+			
+			for(int j=0; j<i; j++) {
+				if(currentWord.equals(duplicateWordsArray[j])) {
+					isUnique = false;
+					wordToRemove = duplicateWordsArray[j];
+					System.out.println(wordToRemove);
+				}
+			}
+			
+			if(isUnique) {
+				uniqueWordsArray[uniqueCount++] = currentWord;
+			}
+		}
+		String[] resultArray = new String[uniqueCount];
+		for(int i=0; i<uniqueCount; i++) {
+			resultArray[i] = uniqueWordsArray[i];
+		}
+		System.out.println(resultArray.length);
+
+		int count = 0;
+		String word = null;
+		for (int i = 0; i < resultArray.length; i++) {
+			if (!resultArray[i].equals(wordToRemove)) {
+				count++;
+				System.out.println(resultArray[i]);
+				word = resultArray[i];
+				System.out.println(word+" : word");
+				
+			}
+		}
+		
+		System.out.println("count : "+count);
+		System.out.println(Arrays.toString(resultArray));
+		 
 	}
 	
 	private static void lenghtOfStringWithoutUsingPredefinedMethod() {
