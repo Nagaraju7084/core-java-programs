@@ -3,25 +3,31 @@ package com.core.java;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class AllCodingProblems {
 
 	public static void main(String[] args) {
+		findCharacterOccurencesInString();
+		//conversionOfintAndStringToStream();
 		//findSecondElementWhoseSumEqualToM();
 		//swapArrayElementsWithoutUsing3rdOrTempVariable();
-		//usingLinkedHashMap();
-		//usingHashSet();
-		//usingCharArray();
+		//findUniqueCharacterInString();
 		//isArrayAlternatePositiveNegative();
 		//HospitalComposition.composition();
 		//Patient.aggregation();
@@ -47,10 +53,203 @@ public class AllCodingProblems {
 		//reverseCharactersInAString();
 		//lenghtOfStringWithoutUsingPredefinedMethod();
 		//findUniqueWords();
-		findMissingCharacterInString();
+		//findMissingCharacterInString();
+		//findPalindromeStringOrNot();
+		//findPalindromeNumberOrNot();
+		//abChecker();
+		//findAdditivePersistence();
+		//findAlphabetSoup();
 		
 	}
 	
+	private static void findPalindromeNumberOrNot() {
+		int number = 1211;
+		String str = String.valueOf(number);
+		System.out.println("str "+str);
+		usingNumberSeperationMethod(number);
+		boolean flag = usingTwoPointers(str);
+		if(flag) {
+			System.out.println("palindrome number");
+		}else {
+			System.out.println("not palindrome number");
+		}
+	}
+
+	private static void usingNumberSeperationMethod(int number) {
+		int backup = number;
+		int rev = 0;
+		while(number > 0) {
+			int rem = number % 10;
+			rev = rev * 10 + rem;
+			number = number / 10;
+		}
+		System.out.println("========"+rev);
+		if(rev == backup) {
+			System.out.println("===palindrome===");
+		}
+	}
+
+	private static void findUniqueCharacterInString() {
+		//usingLinkedHashMap();
+		//usingLinkedHashSet();
+		//usingCharArray();
+	}
+
+	private static void findCharacterOccurencesInString() {
+		String str = "abaabbccd";
+		char[] ch = str.toCharArray();
+		
+		Map<Character, Integer> map = new HashMap<>();
+		
+		for(int i=0; i<ch.length; i++) {
+			if(map.containsKey(ch[i])) {
+				map.put(ch[i], map.get(ch[i]) + 1);
+			}else {
+				map.put(ch[i], 1);
+			}
+		}
+		
+		for(Map.Entry<Character, Integer> m : map.entrySet()) {
+			System.out.println(m.getKey() + "" + m.getValue());
+		}
+	}
+
+	private static void conversionOfintAndStringToStream() {
+		//int ot Stream<Integer> and reverse order
+		int i = 123;
+		int reversed = Integer.parseInt(Stream.of(String.valueOf(i).split("")).sorted(Collections.reverseOrder()).collect(Collectors.joining()));
+		System.out.println(reversed);
+		String[] strArr = {"a","b"};
+		Object[] reversedStringArr = Stream.of(strArr).sorted(Collections.reverseOrder()).toArray();
+		System.out.println(Arrays.toString(reversedStringArr));
+		String str = "abc";
+		String reversedString = Stream.of(str.split("")).sorted(Collections.reverseOrder()).collect(Collectors.joining());
+		System.out.println(reversedString);
+	}
+
+	private static void findAlphabetSoup() {
+		String str = "hello";
+		//int[] intArr = str.chars().sorted().toArray();
+		char[] charArr = Arrays.stream(str.chars().sorted().toArray()).mapToObj(i -> Character.toString((char)i)).collect(Collectors.joining()).toCharArray();
+		//char[] charArr = Arrays.stream(intArr).mapToObj(i -> Character.toString((char)i)).collect(Collectors.joining()).toCharArray();
+		System.out.println(new String(charArr));
+//		String reslut = alphabetSoup(str);
+//		System.out.println(reslut);
+	}
+
+	private static String alphabetSoup(String str) {
+		char[] charArr = str.toCharArray();
+		/*
+		 * char[] sortedCharArr = Arrays.stream(charArr).sorted().toArray(Character::new);
+		 * this stream function will not work rather we will get compile time error because char array is not acceptable, first we should convert char arr into int arr, get the resul
+		 * and finally convert that int array to char arr and return as string
+		 * 
+		 * convert char array into int array
+		 * int[] intArr = new int[charArr.length];
+		 * copy values from char array into int array
+		 * for(int i=0; i<charArr.length; i++){
+		 * 		intArr[i] = charArr[i];
+		 * }
+		 * sort the int stream
+		 * int[] sortedIntArr = Arrays.sort(intArr).sorted().toArray();
+		 * 
+		 * now convert the sorted int stream to char array
+		 * char[] sortedCharArr = new char[sortedIntArr.length];
+		 * copy all values from sortedIntArr into sortedCharArr by converting character
+		 * for(int i=0; i<sortedIntArr.length; i++){
+		 * 		sortedCharArr[i] = (char)sortedIntArr[i];
+		 * }
+		 * return new String(sortedCharArr);
+		 */
+		//char[] sortedCharArr = Arrays.stream(charArr).sorted().toArray(Character::new);
+		//Arrays.sort(charArr);
+		//return String.valueOf(charArr);
+		//manual
+		for(int i=0; i<charArr.length-1; i++) {
+			for(int j= i+1; j<charArr.length; j++) {
+				if(charArr[i] > charArr[j]) {
+					char temp = charArr[i];
+					charArr[i] = charArr[j];
+					charArr[j] = temp;
+				}
+			}
+		}
+		//return new String(charArr);
+		return String.valueOf(charArr);
+	}
+
+	private static void findAdditivePersistence() {
+		int number = 2718;
+		int numOfTimes = additivePersistence(number);
+		System.out.println(numOfTimes);
+	}
+
+	private static int additivePersistence(int number) {
+		int times = 0;
+		int added = number;
+		while(added > 9) {
+			int sum = 0;
+			String[] intArr = Integer.toString(added).split("");
+			for(String i : intArr) {
+				sum += Integer.parseInt(i);
+			}
+			added = sum;
+			times++;
+		}
+		return times;
+	}
+
+	private static void abChecker() {
+		String str = "lane borrowed";
+		boolean result = abCheck(str);
+		System.out.println(result);
+	}
+
+	private static boolean abCheck(String str) {
+		Pattern pattern = Pattern.compile("(a...b|b...a)");
+		Matcher matcher = pattern.matcher(str);
+		return matcher.find() ? true : false;
+	}
+
+	private static void findPalindromeStringOrNot() {
+		String str = "aba"; //
+		//approach 1 using reversing string and for loop
+		String result = "";
+		for(int i=str.length()-1; i>=0; i--) {
+			result = result + str.charAt(i);
+		}
+		if(str.equals(result)) {
+			System.out.println("given string is palindrome");
+		}
+		
+		//approach 2 using stringbuffer object, reverse method of string buffer
+		StringBuffer sb = new StringBuffer(str);
+		sb.reverse();
+		if(str.equals(sb.toString())) {
+			System.out.println("palindrome");
+		}
+		
+		//approach 3 optimized way using two pointers
+		boolean flag = usingTwoPointers(str);
+		if(flag) {
+			System.out.println("polindrom");
+		}else {
+			System.out.println("not polindrome");
+		}
+	}
+
+	private static boolean usingTwoPointers(String str) {
+		int left = 0;
+		int right = str.length()-1;
+		
+		while(left < right) {
+			if(str.charAt(left++) != str.charAt(right--)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	private static void findMissingCharacterInString() {
 		String actual = "apple";
 		String check = "aple";
@@ -718,30 +917,26 @@ public class AllCodingProblems {
 		System.out.println("after skipping duplicate character : " + finalResult.toString());
 	}
 
-	private static void usingHashSet() {
+	private static void usingLinkedHashSet() {
 		String str = "AFFDGED";
 		char[] charArr = str.toCharArray();
 		
-		Set<Character> uniqueChars = new HashSet<>();
-		StringBuilder result = new StringBuilder();
+		Set<Character> uniqueChars = new LinkedHashSet();
 		
 		for(char ch : charArr) {
-			if(!uniqueChars.contains(ch)) {
-				uniqueChars.add(ch);
+			if(uniqueChars.contains(ch)) {
+				uniqueChars.remove(ch);
 			}else {
-				result.append(ch);
+				uniqueChars.add(ch);
 			}
+			
 		}
-		
-		StringBuilder finalResult = new StringBuilder();
-		for(char c : charArr) {
-			if(!result.toString().contains(String.valueOf(c))) {
-				finalResult.append(c);
-			}
+		StringBuilder result = new StringBuilder();
+		for(Character c : uniqueChars) {
+			result.append(c);
 		}
-		
 		System.out.println("original array : " + new String(charArr));
-		System.out.println("after skipping duplicate character : " + finalResult);
+		System.out.println("after skipping duplicate character : " + result.toString());
 	}
 
 	private static void usingLinkedHashMap() {
@@ -751,7 +946,7 @@ public class AllCodingProblems {
 		Map<Character, Integer> map = new LinkedHashMap<Character, Integer>();
 		for (Character c : chars) {
 		    if(map.containsKey(c)) {
-		    	map.put(c, map.get(c)+1);
+		    	//map.put(c, map.get(c)+1);
 		    	map.remove(c);
 		    }else {
 		    	map.put(c, 1);

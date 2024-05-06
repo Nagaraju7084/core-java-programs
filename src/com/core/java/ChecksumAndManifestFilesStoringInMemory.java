@@ -5,16 +5,20 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.IntStream;
 
-public class SimpleKafkaConsumer {
+public class ChecksumAndManifestFilesStoringInMemory {
 
     private static final String FILE_STORAGE_PATH = "D:\\checksum";
     //private static final String S3_BUCKET_NAME = "your-s3-bucket";
 
     private static int fileCount = 0;
+    
+    private static final List<Path> fileArrayList = new ArrayList<>();
 
     public static void main(String[] args) {
         // Simulate processing Kafka messages
@@ -32,7 +36,7 @@ public class SimpleKafkaConsumer {
         saveAndUpload(fileName, checksumUuid);
 
         // Log or further process the checksum
-        System.out.println("Checksum saved to local file and uploaded to S3: " + fileName);
+        //System.out.println("Checksum saved to local file and uploaded to S3: " + fileName);
     }
 
     private static UUID calculateChecksum(byte[] messageBytes) {
@@ -42,14 +46,28 @@ public class SimpleKafkaConsumer {
 
     private static void saveAndUpload(String fileName, UUID checksumUuid) {
         try {
-            // Construct the local file path
+            
+            Path filePath = Paths.get(fileName + ".info");
+            
+         // Construct the local file path
             Path localFilePath = Paths.get(FILE_STORAGE_PATH, fileName + ".txt");
 
             // Write the content to the local file
             String content = fileName + "|" + checksumUuid + "|" + ++fileCount + "|" + getFormattedTimestamp();
+            Files.write(filePath, content.getBytes());
+            
+            //writing content to local files
             Files.write(localFilePath, content.getBytes());
-
-            System.out.println("Checksum saved to local file: " + localFilePath);
+            
+            fileArrayList.add(filePath.toAbsolutePath());
+            
+            System.out.println("files present int the arraylist are :");
+            System.out.println("list of files in the arraylist : " + fileArrayList);
+            
+            System.out.println("files present int the local directory :");
+            System.out.println("list of files in the local directory : " + localFilePath);
+            
+            //System.out.println("Checksum saved to local file: " + filePath);
 
             // Construct the S3 object key based on the local file name
             //String s3ObjectKey = "checksum/" + fileName + ".txt";
