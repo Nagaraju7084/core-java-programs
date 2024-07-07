@@ -1,6 +1,7 @@
 package com.core.java;
 
 import java.lang.reflect.Field;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -32,7 +33,7 @@ public class AllCodingProblems {
 		//findFibonacciNumber();
 		//returnListOfStringUsingStreams();
 		//linkedListOperations();
-		//countSubStringInAGivenString();
+		//countSubStringInAGivenStringOrCheckString1InString2();
 		//findSumOfIntsInArrayUsingStream();
 		//findTheLeaderElementIntheArray();
 		//findNonRepeatedCharacterInAString();
@@ -47,10 +48,250 @@ public class AllCodingProblems {
 		//reverseCharactersInAString();
 		//lenghtOfStringWithoutUsingPredefinedMethod();
 		//findUniqueWords();
-		findMissingCharacterInString();
+		//findMissingCharacterInString();
+		//countingZeorsInArray();
+		//findeSecondRepeatedCharacterInGivenString();
+		//findDuplicateWordInGivenString();
+		//evenMultiplyOddDivide();
+		//findNegativeDominanceInArray();
+		//findNoneZeroNumbersInArray();
+		//missingLetterAndMissingNumber();
+		//oddFirstThenEvenFromArray();
+		//isPalindromeNumber();
+		//isPalindromeString();
+		//primeOrNotFromArray();
+		reverseCharArray();
 		
 	}
 	
+	private static void reverseCharArray() {
+		char[] charArr = {'a', 'b', 'c', 'd'};
+		char[] reversedCharArr = new char[charArr.length];
+		int j = charArr.length;
+		for(int i = 0; i < charArr.length; i++ ) {
+			reversedCharArr[j - 1] = charArr[i];
+			j--;
+		}
+		
+		System.out.println(Arrays.toString(reversedCharArr));
+		
+	}
+
+	private static void primeOrNotFromArray() {
+		int[] intArr = {1, 3, 5, 7, 9, 10};
+		
+		for(int num : intArr) {
+			boolean isPrime = true;
+			for(int i = 2; i <= num / 2; i++) {
+				if(num % i == 0) {
+					isPrime = false;
+					break;
+				}
+			}
+			if(isPrime) {
+				System.out.println(num);
+			}
+		}
+	}
+
+	private static void isPalindromeString() {
+		String str = "aba";
+		
+		String reverseString = "";
+		
+		for(int i = str.length()-1; i >= 0; i--) {
+			reverseString = reverseString + str.charAt(i);
+		}
+		if(reverseString.equalsIgnoreCase(str)) {
+			System.out.println("given string is palindrome : " + str);
+		}else {
+			System.out.println("given string is not palindrome : " + str);
+		}
+	}
+
+	private static void isPalindromeNumber() {
+		int number = 121;
+		
+		int originalNumber = number;
+		int reversedNumber = 0;
+		int remainder;
+		
+		while(number != 0) {
+			remainder = number % 10;
+			reversedNumber = reversedNumber * 10 + remainder;
+			number = number / 10;
+		}
+		
+		if(reversedNumber == originalNumber) {
+			System.out.println("palindrome number");
+		}else {
+			System.out.println("not palindrome number");
+		}
+	}
+
+	private static void oddFirstThenEvenFromArray() {
+		int[] intArr = {1,2,7,10,6,3};
+		List<Integer> oddThenEvenList = IntStream.of(intArr).boxed()
+				.sorted((a,b) -> {
+					if((a % 2 == 0) && (b % 2 != 0)) {
+						return 1;
+					}else if((a % 2 != 0) && (b % 2 == 0)) {
+						return -1;
+					}else {
+						return 0;
+					}
+				}).collect(Collectors.toList());
+		System.out.println(oddThenEvenList);
+	}
+
+	private static void missingLetterAndMissingNumber() {
+		char[] charArr = {'a','b','c','e'};
+		char missingCharacter = findMissingCharFromCharArray(charArr);
+		System.out.println("missing character from char array : " + missingCharacter);
+		
+		int[] intArr = {1,2,3,5};
+		int missingNumber = findMissingNumberFromIntArray(intArr);
+		System.out.println("missing number from int array : " + missingNumber);
+		
+		String[] strArr = {"a","b","c","e"};
+		String missingLetter = findMissingLetterFromStringArray(strArr);
+		System.out.println("missing letter from string array : " + missingLetter);
+		
+	}
+
+	private static String findMissingLetterFromStringArray(String[] strArr) {
+		for(int i=0; i<strArr.length-1; i++) {
+			char currentLetter = strArr[i].charAt(0);
+			char nextLetter = strArr[i+1].charAt(0);
+			if(nextLetter - currentLetter != 1) {
+				char missingLetter = (char)(currentLetter + 1);
+				return String.valueOf(missingLetter);
+			}
+		}
+		return null;
+	}
+
+	private static int findMissingNumberFromIntArray(int[] intArr) {
+		int arrLength = intArr.length + 1;
+		int sumOfNumbers = (arrLength * (arrLength + 1)) / 2;
+		int sumOfArrElements = 0;
+		for(int num : intArr) {
+			sumOfArrElements = sumOfArrElements + num;
+		}
+		return sumOfNumbers - sumOfArrElements;
+	}
+
+	private static char findMissingCharFromCharArray(char[] charArr) {
+		char missingChar = '\0';
+		for(int i=0; i<charArr.length-1; i++) {
+			if(charArr[i+1] - charArr[i] != 1) {
+				missingChar = (char) (charArr[i] + 1);
+			}
+		}
+		return missingChar;
+	}
+
+	private static void findNoneZeroNumbersInArray() {
+		int[] intArray  = {9, 6, 0, 0, 5, 0, -1, 0, 0};
+		
+		List<Integer> numList = new ArrayList<>();
+		//using for each loop
+		for(int num : intArray) {
+			if(num != 0) {
+				numList.add(num);
+			}
+		}
+		System.out.println(numList);
+		
+		//using stream api
+		int[] nonZeroNumbers = Arrays.stream(intArray).filter(n -> n != 0).toArray();
+		System.out.println(Arrays.toString(nonZeroNumbers));
+	}
+
+	private static void findNegativeDominanceInArray() {
+		int[] intArray = {1, -2, -5, -4, 3, -6};
+		
+		long positiveCount, negativeCount;
+		
+		positiveCount = Arrays.stream(intArray).filter(n -> n > 0).count();
+		negativeCount = Arrays.stream(intArray).filter(n -> n < 0).count();
+		System.out.println("positive count : " + positiveCount);
+		System.out.println("negative count : " + negativeCount);
+		if(positiveCount > negativeCount) {
+			System.out.println("positive Dominance");
+		}else {
+			System.out.println("negatitive Dominance");
+		}
+		
+		//without stream
+		
+		for(int n : intArray) {
+			if(n > 0) {
+				positiveCount++;
+			}else if(n < 0) {
+				negativeCount++;
+			}
+		}
+		System.out.println("positive count : " + positiveCount);
+		System.out.println("negative count : " + negativeCount);
+		if(negativeCount > positiveCount) {
+			System.out.println("negatitive Dominance");
+		}
+	}
+
+	private static void evenMultiplyOddDivide() {
+		List<Integer> intList = Arrays.asList(1,2,3,4,5,6,7,8,9,10);
+		BigInteger result = intList.stream().filter(i -> i % 2 == 0).map(BigInteger::valueOf)
+				.reduce(BigInteger.TEN, BigInteger::multiply).or(intList.stream().filter(i -> i % 2 != 0)
+						.map(BigInteger::valueOf).reduce(BigInteger.TEN, BigInteger::divide));
+		System.out.println(result);
+	}
+
+	private static void findDuplicateWordInGivenString() {
+		String str = "i am am string class";
+		String[] strArr = str.split(" ");
+		
+		for(int i=0; i<strArr.length-1; i++) {
+			if(strArr[i].equalsIgnoreCase(strArr[i+1])) {
+				System.out.println("found duplicate word : "+strArr[i]);
+			}
+		}
+	}
+
+	private static void findeSecondRepeatedCharacterInGivenString() {
+		String str = "how are you doing today";
+		char ch = findSecondRepeatedCharacter(str);
+		System.out.println("second repeated character : " + ch);
+	}
+
+	private static char findSecondRepeatedCharacter(String str) {
+		str = str.toLowerCase().replace(" ", "");
+		Map<Character, Integer> charCountMap = new LinkedHashMap<>();
+		
+		for(char ch : str.toCharArray()) {
+			charCountMap.put(ch, charCountMap.getOrDefault(ch, 0) + 1);
+		}
+		
+		//find the second character with count greater than one
+		boolean foundFirstRepeatedCharacter = false;
+		for(Map.Entry<Character, Integer> entry : charCountMap.entrySet()) {
+			if(entry.getValue() > 1) {
+				if(foundFirstRepeatedCharacter) {
+					return entry.getKey();
+				}else {
+					foundFirstRepeatedCharacter = true;
+				}
+			}
+		}
+		return '\0';
+	}
+
+	private static void countingZeorsInArray() {
+		int[] intArray  = {9, 6, 0, 0, 5, 0, -1, 0, 0};
+		long zerosCount = Arrays.stream(intArray).filter(e -> e == 0).count();
+		System.out.println(zerosCount);
+	}
+
 	private static void findMissingCharacterInString() {
 		String actual = "apple";
 		String check = "aple";
@@ -158,6 +399,14 @@ public class AllCodingProblems {
 			result = result + str.charAt(i);
 		}
 		System.out.println(result);
+		
+		//using while loop
+		int length = str.length();
+		while(length > 0) {
+			System.out.print(str.charAt(length -1));
+			length--;
+		}
+		System.out.println();
 	}
 
 	private static void reverseStringWords() {
@@ -177,7 +426,11 @@ public class AllCodingProblems {
 			
 		}
 		//newStr.toString().trim(); //removing the space added after last word
-		System.out.println(newStr.toString().trim());
+		//System.out.println(newStr.toString().trim());
+		
+		//using java8 streams
+		String reverseWord = Arrays.stream(str.split("\\s+")).sorted((a,b) -> -1).collect(Collectors.joining(" "));
+		System.out.println(reverseWord);
 	}
 
 	private static void extractingPartOfStringFromAGivenString() {
@@ -459,6 +712,14 @@ public class AllCodingProblems {
 				System.out.println(ch);
 			}
 		}
+		
+		//using for each loop
+		for(char ch : str.toCharArray()) {
+			if(str.indexOf(ch) == str.lastIndexOf(ch)) {
+				System.out.println(ch);
+			}
+		}
+		
 	}
 
 	private static void findTheLeaderElementIntheArray() {
@@ -522,7 +783,7 @@ public class AllCodingProblems {
 		System.out.println(sumInts);
 	}
 
-	private static void countSubStringInAGivenString() {
+	private static void countSubStringInAGivenStringOrCheckString1InString2() {
 		String str = "indians indian india";
 		String subString = "ind";
 		
@@ -551,6 +812,28 @@ public class AllCodingProblems {
 		else
 			System.out.println("the frequency or substring count is : "+count);
 		
+		//another way
+		int count2 = 0;
+		while(f != -1) {
+			f = str.indexOf(subString, f);
+			
+			if(f != -1) {
+				count2 ++;
+				f = f + subString.length();
+			}
+		}
+		System.out.println("using while loop " + count);
+		
+		//another way
+		int count3 = 0;
+		int index = str.indexOf(subString);
+		
+		while(index != -1) {
+			count3++;
+			//index = index + str.indexOf(subString, index);
+			index = str.indexOf(subString, index + 1);
+		}
+		System.out.println(subString + " using 3rd way : "+ count3);
 	}
 
 	private static void linkedListOperations() {

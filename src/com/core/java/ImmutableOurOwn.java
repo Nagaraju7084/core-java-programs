@@ -2,17 +2,17 @@ package com.core.java;
 
 public class ImmutableOurOwn {
 	public static void main(String[] args) {
-		Test t1 = new Test(10);
+		Immutable t1 = new Immutable(10);
 		System.out.println(t1.getX());
-		Test t2 = t1.modify(20);
+		Immutable t2 = t1.modify(20);
 		System.out.println(t1.getX());
 		System.out.println(t2.getX());
 	}
 }
 
-class Test{
+class Immutable{
 	final int x;
-	Test(int x){
+	Immutable(int x){
 		this.x = x;
 	}
 	
@@ -20,11 +20,11 @@ class Test{
 		return x;
 	}
 	
-	public Test modify(int x) {
+	public Immutable modify(int x) {
 		if(this.x == x) {
 			return this;
 		}
-		return new Test(x);
+		return new Immutable(x);
 	}
 	
 	@Override
