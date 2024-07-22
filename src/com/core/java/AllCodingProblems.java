@@ -56,14 +56,24 @@ public class AllCodingProblems {
 		//findNegativeDominanceInArray();
 		//findNoneZeroNumbersInArray();
 		//missingLetterAndMissingNumber();
-		//oddFirstThenEvenFromArray();
+		oddFirstThenEvenFromArray();
 		//isPalindromeNumber();
 		//isPalindromeString();
 		//primeOrNotFromArray();
-		reverseCharArray();
+		//reverseCharArray();
+		//findFactorialOfNumber();
 		
 	}
 	
+	private static void findFactorialOfNumber() {
+		int number = 4;
+		int fact = 1;
+		for(int i = number; i>=1; i--) {
+			fact = fact * i;
+		}
+		System.out.println("factorial of given number is \t" + fact);
+	}
+
 	private static void reverseCharArray() {
 		char[] charArr = {'a', 'b', 'c', 'd'};
 		char[] reversedCharArr = new char[charArr.length];
@@ -82,14 +92,14 @@ public class AllCodingProblems {
 		
 		for(int num : intArr) {
 			boolean isPrime = true;
-			for(int i = 2; i <= num / 2; i++) {
+			for(int i = 2; i * i <= num; i++) {
 				if(num % i == 0) {
 					isPrime = false;
 					break;
 				}
 			}
 			if(isPrime) {
-				System.out.println(num);
+				System.out.println("prime number \t: " + num);
 			}
 		}
 	}
@@ -118,7 +128,7 @@ public class AllCodingProblems {
 		
 		while(number != 0) {
 			remainder = number % 10;
-			reversedNumber = reversedNumber * 10 + remainder;
+			reversedNumber = (reversedNumber * 10) + remainder;
 			number = number / 10;
 		}
 		
@@ -130,7 +140,7 @@ public class AllCodingProblems {
 	}
 
 	private static void oddFirstThenEvenFromArray() {
-		int[] intArr = {1,2,7,10,6,3};
+		int[] intArr = {1,2,7,10,6,3,12,5};
 		List<Integer> oddThenEvenList = IntStream.of(intArr).boxed()
 				.sorted((a,b) -> {
 					if((a % 2 == 0) && (b % 2 != 0)) {
@@ -142,6 +152,34 @@ public class AllCodingProblems {
 					}
 				}).collect(Collectors.toList());
 		System.out.println(oddThenEvenList);
+		//without using new array instead, using existing array
+		int[] intArr3 = {1,2,7,10,6,3,12,5};
+		int oddCount = 0;
+		for(int i=0; i<intArr3.length; i++) {
+			if(intArr3[i] % 2 != 0) {
+				int temp = intArr3[oddCount];
+				intArr3[oddCount] = intArr3[i];
+				intArr3[i] = temp;
+				oddCount++;
+			}
+		}
+		System.out.println("odd first follwed by even \t" + Arrays.toString(intArr3));
+		//using java 1.7
+		int[] intArr2 = {1,2,7,10,6,3,12,5};
+		int intArr2Length = intArr2.length;
+		int[] resultArr = new int[intArr2Length];
+		int oddIndex = 0;
+		int evenIndex = intArr2Length - 1;
+		for(int i=0; i<intArr2.length; i++) {
+			if(intArr2[i] % 2 != 0) {
+				resultArr[oddIndex++] = intArr2[i];
+				//oddIndex++;
+			}else {
+				resultArr[evenIndex--] = intArr2[i];
+				//evenIndex--;
+			}
+		}
+		System.out.println("array is \t" + Arrays.toString(resultArr));
 	}
 
 	private static void missingLetterAndMissingNumber() {
