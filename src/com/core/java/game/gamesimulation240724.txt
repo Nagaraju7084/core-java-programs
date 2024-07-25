@@ -1,0 +1,18 @@
+24/07/24 :
+
+question :
+
+Imagine there is 100 pieces of paper in a hat, labelled from 1 to 100. Two pieces of
+papers choosen at random. The smaller number is subtracted from the larger number
+and the answer is written on a new piece of paper. This number is placed back in the hat
+and the two original numbers discarded. The process is repeats until one number is left.
+
+What can you say about the final number left in the hat? Would that be a smaller number
+or a bigger number. Let's define if the number is smaller than mid point(less than 50 in case of 1 to 100),
+then we call it a smaller number and if its larger than the mid point(more than 50 in case of 1 to 100),
+we call it a larger number.
+
+your job is to write a simulator for this game. Write a function that takes two arguments:
+first one is the max number N and second argument is how many times the simulation must run.
+The output can be the winning number for each simulation run and at the end, what percentage of times
+a smaller number won and what percentage of time a larger number won.  

@@ -56,15 +56,29 @@ public class AllCodingProblems {
 		//findNegativeDominanceInArray();
 		//findNoneZeroNumbersInArray();
 		//missingLetterAndMissingNumber();
-		oddFirstThenEvenFromArray();
+		//oddFirstThenEvenFromArray();
 		//isPalindromeNumber();
 		//isPalindromeString();
 		//primeOrNotFromArray();
 		//reverseCharArray();
 		//findFactorialOfNumber();
+		primeFactorsOfNumber();
 		
 	}
 	
+	private static void primeFactorsOfNumber() {
+		int number = 315;
+		int i;
+		for(i = 3; i <= Math.sqrt(number); i += 2) {
+			// while i devides number, print i and devide number
+			while(number % i == 0) {
+				System.out.println(i);
+				number /= i;
+			}
+		}
+		System.out.println(i);
+	}
+
 	private static void findFactorialOfNumber() {
 		int number = 4;
 		int fact = 1;
