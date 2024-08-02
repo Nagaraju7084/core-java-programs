@@ -62,10 +62,59 @@ public class AllCodingProblems {
 		//primeOrNotFromArray();
 		//reverseCharArray();
 		//findFactorialOfNumber();
-		primeFactorsOfNumber();
+		//primeFactorsOfNumber();
+		//findDuplicateNumberInList();
+		findEvenNumbersAndAddFromList();
 		
 	}
 	
+	private static void findEvenNumbersAndAddFromList() {
+		//using java7
+		List<Integer> intList = Arrays.asList(1,2,3,4,5,6);
+		List<Integer> evenList = new ArrayList<>();
+		for(Integer num : intList) {
+			if(num % 2 == 0) {
+				evenList.add(num);
+			}
+		}
+		int sum = 0;
+		for(Integer n : evenList) {
+			sum = sum + n;
+		}
+		System.out.println(sum);
+		
+		//using java8 sum() funtion of IntStream
+		long summation = intList.stream().filter(n -> n % 2 == 0).mapToInt(Integer::intValue).sum();
+		System.out.println(summation);
+		
+		//using Collectors.summingInt(mapper)
+		//where mapper = parsing to integer just like Integer.parseInt()
+		long sums = intList.stream().filter(i -> i % 2 == 0).collect(Collectors.summingInt(Integer::intValue));
+		System.out.println(sums);
+		//using reduce method
+		int sumOfEvenNumbers = intList.stream().filter(n -> n % 2 == 0).mapToInt(Integer::intValue)
+		.reduce(0, (a, b) -> a + b );
+		System.out.println(sumOfEvenNumbers);
+	}
+
+	private static void findDuplicateNumberInList() {
+		List<Integer> intList = Arrays.asList(1,1,2,2,3,4,5,6);
+		List<Integer> duplicates = intList.stream().collect(Collectors.groupingBy(num -> num, Collectors.counting()))
+		.entrySet().stream()
+		.filter(entry -> entry.getValue() > 1)
+		.map(Map.Entry::getKey)
+		.collect(Collectors.toList());
+		System.out.println(duplicates);
+		
+		//using java7
+		Set<Integer> set = new HashSet<>();
+		for(Integer num : intList) {
+			if(!set.add(num)) {
+				System.out.println("duplicate number : " + num);
+			}
+		}
+	}
+
 	private static void primeFactorsOfNumber() {
 		int number = 315;
 		int i;
