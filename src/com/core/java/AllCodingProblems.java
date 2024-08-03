@@ -45,7 +45,7 @@ public class AllCodingProblems {
 		//findMaxOccurenceOfCharInString();
 		//extractingPartOfStringFromAGivenString();
 		//reverseStringWords();
-		//reverseCharactersInAString();
+		reverseCharactersInAString();
 		//lenghtOfStringWithoutUsingPredefinedMethod();
 		//findUniqueWords();
 		//findMissingCharacterInString();
@@ -64,10 +64,34 @@ public class AllCodingProblems {
 		//findFactorialOfNumber();
 		//primeFactorsOfNumber();
 		//findDuplicateNumberInList();
-		findEvenNumbersAndAddFromList();
+		//findEvenNumbersAndAddFromList();
+		//findTheMostBookedRooms();
 		
 	}
 	
+	public static void findTheMostBookedRooms() {
+		List<Booking> bookings = Arrays.asList(
+				new Booking("Room1", "2023-07-01"),
+	            new Booking("Room2", "2023-07-01"),
+	            new Booking("Room1", "2023-07-02"),
+	            new Booking("Room3", "2023-07-02"),
+	            new Booking("Room1", "2023-07-03"),
+	            new Booking("Room2", "2023-07-03"),
+	            new Booking("Room3", "2023-07-04"),
+	            new Booking("Room1", "2023-07-04")
+				);
+		//classifier meaning by which property will you use to group / grouping has been done based on which property 
+		//and
+		//on selected property again counting
+		String mostBookedRooms = bookings.stream().collect(Collectors.groupingBy(Booking::getRoomId, Collectors.counting()))
+				.entrySet()
+				.stream()
+				.max(Map.Entry.comparingByValue()) //max method will take comparator
+				.map(Map.Entry::getKey)
+				.orElse("no bookings");
+		System.out.println(mostBookedRooms);
+	}
+
 	private static void findEvenNumbersAndAddFromList() {
 		//using java7
 		List<Integer> intList = Arrays.asList(1,2,3,4,5,6);
@@ -508,6 +532,20 @@ public class AllCodingProblems {
 			length--;
 		}
 		System.out.println();
+		
+		//second way
+		StringBuilder sb = new StringBuilder();
+		for(int i = str.length()-1; i>=0; i--) {
+			sb.append(str.charAt(i));
+		}
+		System.out.println("reversing string using StringBuilder object : " + sb.toString());
+		
+		//using java8
+		String reversedString = IntStream.range(0, str.length())
+				.mapToObj(i -> str.charAt(str.length() - i - 1))
+				.map(Object::toString)
+				.collect(Collectors.joining());
+		System.out.println(reversedString);
 	}
 
 	private static void reverseStringWords() {
@@ -1322,4 +1360,5 @@ class LinkedList{
 		}
 		System.out.println(tempNode.data);
 	}
+	
 }
