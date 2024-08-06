@@ -20,10 +20,7 @@ public class AllCodingProblems {
 	public static void main(String[] args) {
 		//findSecondElementWhoseSumEqualToM();
 		//swapArrayElementsWithoutUsing3rdOrTempVariable();
-		//usingLinkedHashMap();
-		//usingHashSet();
-		//usingCharArray();
-		//isArrayAlternatePositiveNegative();
+		isArrayAlternatePositiveNegative();
 		//HospitalComposition.composition();
 		//Patient.aggregation();
 		//Nurse.isARelation();
@@ -34,7 +31,6 @@ public class AllCodingProblems {
 		//returnListOfStringUsingStreams();
 		//linkedListOperations();
 		//countSubStringInAGivenStringOrCheckString1InString2();
-		//findSumOfIntsInArrayUsingStream();
 		//findTheLeaderElementIntheArray();
 		//findNonRepeatedCharacterInAString();
 		//findNumberStartwithOneInGivenIntList();
@@ -45,9 +41,11 @@ public class AllCodingProblems {
 		//findMaxOccurenceOfCharInString();
 		//extractingPartOfStringFromAGivenString();
 		//reverseStringWords();
-		reverseCharactersInAString();
+		//reverseCharactersInAString();
 		//lenghtOfStringWithoutUsingPredefinedMethod();
 		//findUniqueWords();
+		findFirstUniqueCharFromString();
+		//findUniqueCharsFromString();
 		//findMissingCharacterInString();
 		//countingZeorsInArray();
 		//findeSecondRepeatedCharacterInGivenString();
@@ -69,6 +67,105 @@ public class AllCodingProblems {
 		
 	}
 	
+	private static void findFirstUniqueCharFromString() {
+		//using char arr
+		String convertCharArr = "affdgdem";
+		char[] charArr = convertCharArr.toCharArray(); // { 'a', 'f', 'f', 'd', 'g', 'd', 'e', 'm' };
+		int n = charArr.length;
+
+		char[] originalCharArr = new char[n];
+		System.arraycopy(charArr, 0, originalCharArr, 0, n);
+
+		for (int i = 0; i < n; i++) {
+			if (charArr[i] != '\0') {
+				for (int j = i + 1; j < n; j++) {
+					if (charArr[i] == charArr[j]) {
+						charArr[j] = '\0';
+						charArr[i] = '\0';
+					}
+				}
+			}
+		}
+
+		StringBuilder finalResult = new StringBuilder();
+		for (char ch : charArr) {
+			if (ch != '\0') {
+				finalResult.append(ch);
+			}
+		}
+
+		System.out.println("original array : " + new String(originalCharArr));
+		System.out.println("after skipping duplicate character : " + finalResult.toString());
+		System.out.println("original array : " + new String(originalCharArr));
+		
+		String str = "aabbccddefg";
+		
+		//using java7
+		for(int i=0; i<str.length()-1; i++) {
+			if(str.indexOf(str.charAt(i)) == str.lastIndexOf(str.charAt(i))) {
+				System.out.println(str.charAt(i)); //after printing first unique character the loop will break
+				break;
+			}
+		}
+		
+		//usingLinkedHashMap
+		String strLetters = "AFFDGED"; //
+		char[] chars = strLetters.toCharArray();
+		Map<Character, Integer> map = new LinkedHashMap<Character, Integer>();
+		for (Character c : chars) {
+			if (map.containsKey(c)) {
+				map.put(c, map.get(c) + 1);
+				map.remove(c);
+			} else {
+				map.put(c, 1);
+			}
+		}
+		
+		//using HashSet
+		String strGiven = "AFFDGED";
+		char[] convertedCharArr = strGiven.toCharArray();
+
+		Set<Character> uniqueChars = new HashSet<>();
+		StringBuilder result = new StringBuilder();
+
+		for (char ch : convertedCharArr) {
+			if (!uniqueChars.contains(ch)) {
+				uniqueChars.add(ch);
+			} else {
+				result.append(ch);
+			}
+		}
+
+		StringBuilder finalResult2 = new StringBuilder();
+		for (char c : charArr) {
+			if (!result.toString().contains(String.valueOf(c))) {
+				finalResult2.append(c);
+			}
+		}
+
+		System.out.println("original array : " + new String(charArr));
+		System.out.println("after skipping duplicate character : " + finalResult2);
+		
+		System.out.println(map.keySet());
+		//using java8
+		//using filter() and findFirst()
+		Character firstUniqueChar = str.chars()
+				.filter(c -> str.indexOf((char)c) == str.lastIndexOf((char)c))
+				.mapToObj(c -> (char)c)
+				.findFirst()
+				.get();
+		System.out.println(firstUniqueChar);
+	}
+
+	private static void findUniqueCharsFromString() {
+		String str = "aabbccddefg";
+		
+		List<Character> uniqueChars = str.chars().filter(c -> str.indexOf((char)c) == str.lastIndexOf((char)c))
+				.mapToObj(c -> (char)c)
+				.collect(Collectors.toList());
+		System.out.println(uniqueChars);
+	}
+
 	public static void findTheMostBookedRooms() {
 		List<Booking> bookings = Arrays.asList(
 				new Booking("Room1", "2023-07-01"),
@@ -419,7 +516,7 @@ public class AllCodingProblems {
 
 	private static void findMissingCharacterInString() {
 		String actual = "apple";
-		String check = "aple";
+		String check = "appe";
 		
 		findMissingCharacterFromGivenStrings(actual, check);
 		
@@ -436,46 +533,26 @@ public class AllCodingProblems {
 
 	private static void findUniqueWords() {
 		String[] duplicateWordsArray = {"xyz","lmn","xyz","aaa"};
-		String[] uniqueWordsArray = new String[duplicateWordsArray.length];
 		
-		int uniqueCount = 0;
-		String wordToRemove = "";
-		for(int i=0; i<duplicateWordsArray.length; i++) {
-			String currentWord = duplicateWordsArray[i];
-			boolean isUnique = true;
-			
-			for(int j=0; j<i; j++) {
-				if(currentWord.equals(duplicateWordsArray[j])) {
-					isUnique = false;
-					wordToRemove = duplicateWordsArray[j];
-					System.out.println(wordToRemove);
-				}
-			}
-			
-			if(isUnique) {
-				uniqueWordsArray[uniqueCount++] = currentWord;
-			}
-		}
-		String[] resultArray = new String[uniqueCount];
-		for(int i=0; i<uniqueCount; i++) {
-			resultArray[i] = uniqueWordsArray[i];
-		}
-		System.out.println(resultArray.length);
-
-		int count = 0;
-		String word = null;
-		for (int i = 0; i < resultArray.length; i++) {
-			if (!resultArray[i].equals(wordToRemove)) {
-				count++;
-				System.out.println(resultArray[i]);
-				word = resultArray[i];
-				System.out.println(word+" : word");
-				
+		Set<String> setOfStrings = new HashSet<>();
+		List<String> duplicates = new ArrayList<>();
+		
+		for(String str : duplicateWordsArray) {
+			if(!setOfStrings.add(str)) {
+				duplicates.add(str);
 			}
 		}
 		
-		System.out.println("count : "+count);
-		System.out.println(Arrays.toString(resultArray));
+		System.out.println(setOfStrings);
+		System.out.println(duplicates);
+		
+		for(int i=0; i<duplicates.size(); i++) {
+			if(setOfStrings.contains(duplicates.get(i))) {
+				setOfStrings.remove(duplicates.get(i));
+			}
+		}
+		
+		System.out.println(setOfStrings);
 		 
 	}
 	
@@ -913,15 +990,6 @@ public class AllCodingProblems {
 		}
 	}
 
-	private static void findSumOfIntsInArrayUsingStream() {
-		
-		int a[] = {4, 11, 9, 12, 10, 7};
-
-		Integer sumInts = Arrays.stream(a).filter(i -> i % 2 == 0).sum();
-		
-		System.out.println(sumInts);
-	}
-
 	private static void countSubStringInAGivenStringOrCheckString1InString2() {
 		String str = "indians indian india";
 		String subString = "ind";
@@ -1109,78 +1177,6 @@ public class AllCodingProblems {
 		System.arraycopy(positiveArray, 0, trimmedArray, 0, positiveCount);
 		
 		System.out.println(Arrays.toString(trimmedArray));
-	}
-
-	private static void usingCharArray() {
-		char[] charArr = {'a', 'f', 'f', 'd', 'g', 'd', 'e'};
-		int n = charArr.length;
-		
-		char[] originalCharArr = new char[n];
-		System.arraycopy(charArr, 0, originalCharArr, 0, n);
-		
-		for(int i=0; i<n; i++) {
-			if(charArr[i] != '\0') {
-				for(int j=i+1; j<n; j++) {
-					if(charArr[i] == charArr[j]) {
-						charArr[j] = '\0';
-						charArr[i] = '\0';
-					}
-				}
-			}
-		}
-		
-		StringBuilder finalResult = new StringBuilder();
-		for(char ch : charArr) {
-			if(ch != '\0') {
-				finalResult.append(ch);
-			}
-		}
-		
-		System.out.println("original array : " + new String(originalCharArr));
-		System.out.println("after skipping duplicate character : " + finalResult.toString());
-	}
-
-	private static void usingHashSet() {
-		String str = "AFFDGED";
-		char[] charArr = str.toCharArray();
-		
-		Set<Character> uniqueChars = new HashSet<>();
-		StringBuilder result = new StringBuilder();
-		
-		for(char ch : charArr) {
-			if(!uniqueChars.contains(ch)) {
-				uniqueChars.add(ch);
-			}else {
-				result.append(ch);
-			}
-		}
-		
-		StringBuilder finalResult = new StringBuilder();
-		for(char c : charArr) {
-			if(!result.toString().contains(String.valueOf(c))) {
-				finalResult.append(c);
-			}
-		}
-		
-		System.out.println("original array : " + new String(charArr));
-		System.out.println("after skipping duplicate character : " + finalResult);
-	}
-
-	private static void usingLinkedHashMap() {
-		String str = "AFFDGED"; //
-
-		char[] chars = str.toCharArray();
-		Map<Character, Integer> map = new LinkedHashMap<Character, Integer>();
-		for (Character c : chars) {
-		    if(map.containsKey(c)) {
-		    	map.put(c, map.get(c)+1);
-		    	map.remove(c);
-		    }else {
-		    	map.put(c, 1);
-		    }
-		}
-
-		System.out.println(map.keySet());
 	}
 
 	private static void swapArrayElementsWithoutUsing3rdOrTempVariable() {
