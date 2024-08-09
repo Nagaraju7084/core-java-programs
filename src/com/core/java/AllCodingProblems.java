@@ -20,7 +20,7 @@ public class AllCodingProblems {
 	public static void main(String[] args) {
 		//findSecondElementWhoseSumEqualToM();
 		//swapArrayElementsWithoutUsing3rdOrTempVariable();
-		isArrayAlternatePositiveNegative();
+		//isArrayAlternatePositiveNegative();
 		//HospitalComposition.composition();
 		//Patient.aggregation();
 		//Nurse.isARelation();
@@ -55,11 +55,11 @@ public class AllCodingProblems {
 		//findNoneZeroNumbersInArray();
 		//missingLetterAndMissingNumber();
 		//oddFirstThenEvenFromArray();
-		//isPalindromeNumber();
+		isPalindromeNumber();
 		//isPalindromeString();
 		//primeOrNotFromArray();
 		//reverseCharArray();
-		//findFactorialOfNumber();
+		findFactorialOfNumber();
 		//primeFactorsOfNumber();
 		//findDuplicateNumberInList();
 		//findEvenNumbersAndAddFromList();
@@ -256,6 +256,18 @@ public class AllCodingProblems {
 			fact = fact * i;
 		}
 		System.out.println("factorial of given number is \t" + fact);
+		
+		//using recursion
+		System.out.println(calculateFactorial(number));
+		
+	}
+	private static int calculateFactorial(int n) {
+		if(n == 1 || n == 0) {
+			return 1;
+		}
+		int nm1_factorial = calculateFactorial(n-1);
+		int n_factorial = n * nm1_factorial;
+		return n_factorial;
 	}
 
 	private static void reverseCharArray() {
