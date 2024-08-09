@@ -12,3 +12,8 @@ bin/com/core/java/Record.class
 *.class
 *.class
 *.class
+*.class
+*.class
+.classpath
+*.class
+.classpath
