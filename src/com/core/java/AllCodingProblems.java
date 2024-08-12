@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -44,7 +45,7 @@ public class AllCodingProblems {
 		//reverseCharactersInAString();
 		//lenghtOfStringWithoutUsingPredefinedMethod();
 		//findUniqueWords();
-		findFirstUniqueCharFromString();
+		//findFirstUniqueCharFromString();
 		//findUniqueCharsFromString();
 		//findMissingCharacterInString();
 		//countingZeorsInArray();
@@ -55,18 +56,192 @@ public class AllCodingProblems {
 		//findNoneZeroNumbersInArray();
 		//missingLetterAndMissingNumber();
 		//oddFirstThenEvenFromArray();
-		isPalindromeNumber();
+		//isPalindromeNumber();
 		//isPalindromeString();
 		//primeOrNotFromArray();
 		//reverseCharArray();
-		findFactorialOfNumber();
+		//findFactorialOfNumber();
 		//primeFactorsOfNumber();
 		//findDuplicateNumberInList();
 		//findEvenNumbersAndAddFromList();
 		//findTheMostBookedRooms();
+		//findMinElementFromArray();
+		//findMaxElementFromArray();
+		//findAverageFromArray();
+		//findNumberOfOccurencesOfElementInArray();
+		//findProfitOfStocks();
+		//joiningStringsInList();
+		//summingNnumbers();
+		//sortListInAscendingAndDescendingOrderAndFindMaxNumber();
+		averageMarksOfStudentFrom2dArray();
 		
 	}
 	
+	private static void averageMarksOfStudentFrom2dArray() {
+		String[][] grades = { 
+				{ "Rohit", "85" },
+				{ "Rahul", "80" },
+				{ "Amit", "85" },
+				{ "Rohit", "90" } 
+			};
+		
+		String[] students = new String[grades.length];
+		int[] totalMarks = new int[grades.length];
+		int[] count = new int[grades.length];
+		int studentCount = 0;
+		
+		for(int i=0; i<grades.length; i++) {
+			
+			String name = "";
+			int marks = 0;
+			
+			//dynamically access the elements
+			for(int j=0; j<grades[i].length; j++) {
+				if(j==0) {
+					name = grades[i][j];
+				}else {
+					marks = Integer.parseInt(grades[i][j]);
+				}
+			}
+			
+			//check if the student already exists in our array
+			boolean studentExists = false;
+			for(int k=0; k<studentCount; k++) {
+				if(students[k].equals(name)) {
+					totalMarks[k] += marks;
+					count[k]++;
+					studentExists = true;
+					break;
+				}
+			}
+			
+			//if the student doesn't exist, add them to the array
+			if(!studentExists) {
+				students[studentCount] = name;
+				totalMarks[studentCount] = marks;
+				count[studentCount] = 1;
+				studentCount++;
+			}
+			
+		}// end of outer for loop
+		
+		//calculate and print the average marks only for those students with more than one entry
+		for(int i=0; i<studentCount; i++) {
+			if(count[i] > 1) {
+				double averageMarks = totalMarks[i] / count[i];
+				System.out.println("student : " + students[i] + "\naverage marks : " + averageMarks);
+			}
+		}
+	}
+
+	private static void sortListInAscendingAndDescendingOrderAndFindMaxNumber() {
+		List<Integer> intList = Arrays.asList(6,8,2,5,4,1);
+		//default => ascending order
+		List<Integer> sortedNumbers = intList.stream().sorted().collect(Collectors.toList());
+		System.out.println(sortedNumbers);
+		
+		//descending order
+		List<Integer> descendinOrderNumbers = intList.stream().sorted((a,b) -> b.compareTo(a)).collect(Collectors.toList());
+		System.out.println(descendinOrderNumbers);
+		
+		int maxNumber = intList.stream().max(Integer::compareTo).get();
+		System.out.println(maxNumber);
+	}
+
+	private static void summingNnumbers() {
+		int n = 5; //5+4+3+2+1
+		int sum = IntStream.rangeClosed(1, n).sum();
+		System.out.println(sum);
+	}
+
+	private static void joiningStringsInList() {
+		List<String> listOfStrings = Arrays.asList("apple", "banana", "mango");
+		String resultString = listOfStrings.stream().collect(Collectors.joining(","));
+		System.out.println(resultString);
+	}
+
+	private static void findProfitOfStocks() {
+		int[] intArr = { 7, 1, 4, 6, 3 }; // price array of stock day wise => future and current price
+		// find maximum profit to get the buying price should be low(lesser value from
+		// all values)
+		// selling price should be highest(greater value from all values)
+		// sell - buying = profit
+		// to get the buying price should be low(lesser value from all values)
+		int minPrice = Integer.MAX_VALUE;
+		int maxProfit = 0;
+		
+		for(int i=0; i<intArr.length; i++) {
+			if(minPrice > intArr[i]) {
+				minPrice = intArr[i];
+			}
+			
+			int potentialProfit = intArr[i] - minPrice;
+			
+			if(potentialProfit > maxProfit) {
+				maxProfit = potentialProfit;
+			}
+		}
+		
+		System.out.println(maxProfit);
+	}
+
+	private static void findNumberOfOccurencesOfElementInArray() {
+		//if a number present in the array more than once, print that number allong with its occurences in the array
+		int[] intArr = {7, 3, 6, 2, 2, 2, 1, 8};
+		int count = 0;
+		int repeatedNumber = 0;
+		for(int i=0; i<intArr.length; i++) {
+			for(int j=i+1; j<intArr.length; j++) {
+				if(intArr[i] == intArr[j]) {
+					repeatedNumber = intArr[i];
+					count++;
+				}
+			}
+		}
+		System.out.println("repeatedNumber = " + repeatedNumber);
+		System.out.println("count = " + count);
+	}
+
+	private static void findAverageFromArray() {
+		int[] intArr = {7, 3, 6, 2, 1, 8};
+		int sum = 0;
+		int i=0;
+		while(i<intArr.length) {
+			sum += intArr[i];
+			i++;
+		}
+		System.out.println("sum of elements : " + sum);
+		System.out.println("count of elements : " + intArr.length);
+		int average = sum / intArr.length;
+		System.out.println("average of elements : " + average);
+	}
+
+	private static void findMaxElementFromArray() {
+		int[] intArr = {7, 3, 6, 2, 1, 8};
+		int max = Integer.MIN_VALUE;
+		int i = 0;
+		while(i<intArr.length){
+			if(intArr[i] > max) {
+				max = intArr[i];
+			}
+			i++;
+		}
+		System.out.println("max element : " + max);
+	}
+
+	private static void findMinElementFromArray() {
+		int[] intArr = {7, 3, 6, 2, 1, 8};
+		int min = Integer.MAX_VALUE;
+		int i=0;
+		while(i < intArr.length) {
+			if(min > intArr[i]) {
+				min = intArr[i];
+			}
+			i++;
+		}
+		System.out.println("min element : " + min);
+	}
+
 	private static void findFirstUniqueCharFromString() {
 		//using char arr
 		String convertCharArr = "affdgdem";
@@ -544,19 +719,22 @@ public class AllCodingProblems {
 	}
 
 	private static void findUniqueWords() {
-		String[] duplicateWordsArray = {"xyz","lmn","xyz","aaa"};
+		String[] duplicateWordsArray = {"xyz","lmn","xyz","aaa", "xyz"};
+		List<String> listOfStrings = Arrays.asList("Pen", "Eraser", "Note Book", "Pen", "Pencil", "Pen", "Note Book",
+				"Pencil"); 
 		
 		Set<String> setOfStrings = new HashSet<>();
 		List<String> duplicates = new ArrayList<>();
-		
+		int count=1;
 		for(String str : duplicateWordsArray) {
 			if(!setOfStrings.add(str)) {
 				duplicates.add(str);
+				count++;
 			}
 		}
 		
 		System.out.println(setOfStrings);
-		System.out.println(duplicates);
+		System.out.println(duplicates.get(0) + " : " + count);
 		
 		for(int i=0; i<duplicates.size(); i++) {
 			if(setOfStrings.contains(duplicates.get(i))) {
@@ -565,6 +743,22 @@ public class AllCodingProblems {
 		}
 		
 		System.out.println(setOfStrings);
+		
+		//using java8 stream api
+		Map.Entry<String, Long> maxOccurencWord = Arrays.stream(duplicateWordsArray).collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+		.entrySet()
+		.stream()
+		.max(Map.Entry.comparingByValue())
+		.orElse(null);
+		System.out.println(maxOccurencWord);
+		
+		Map.Entry<String, Long> maxRepeatedWordCount = listOfStrings.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+		.entrySet()
+		.stream()
+		.max(Map.Entry.comparingByValue())
+		.orElse(null);
+		
+		System.out.println(maxRepeatedWordCount);
 		 
 	}
 	
