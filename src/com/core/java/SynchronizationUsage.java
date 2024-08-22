@@ -6,7 +6,6 @@ public class SynchronizationUsage {
 		MyThread t1 = new MyThread(counter);
 		MyThread t2 = new MyThread(counter);
 		//here t1 and t2 are two threads are sharing the same resource/object i.e. counter
-		//due to this, we will get inconsistent value
 		t1.start();
 		t2.start();
 		try {
