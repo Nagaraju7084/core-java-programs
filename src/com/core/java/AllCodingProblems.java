@@ -73,10 +73,18 @@ public class AllCodingProblems {
 		//joiningStringsInList();
 		//summingNnumbers();
 		//sortListInAscendingAndDescendingOrderAndFindMaxNumber();
-		averageMarksOfStudentFrom2dArray();
+		//averageMarksOfStudentFrom2dArray();
+		searchGivenStringBasedOnCharactersGivenInTheDropdown();
 		
 	}
 	
+	private static void searchGivenStringBasedOnCharactersGivenInTheDropdown() {
+		//camera, mobile, charger, laptop, keyboard, mouse, computer, coocker, calculator
+		//if type c in dropdown only at most 3 products start with c will come and those are in lexicographical order
+		//lexicographical order means for example
+		//camera, charger, computer => these three products 
+	}
+
 	private static void averageMarksOfStudentFrom2dArray() {
 		String[][] grades = { 
 				{ "Rohit", "85" },
