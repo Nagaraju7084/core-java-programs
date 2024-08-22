@@ -15,9 +15,9 @@ public class SynchronizationUsage {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		System.out.println(counter.getCounter()); //we will not get consistent value
-		//i.e. at each execution the counter value is different, it is not actual/consistent
-		//to overcome this, go for synchronization using synchronized method or synchronized block
+		System.out.println(counter.getCounter()); //now we will get actual value i.e. 2000
+		//how many times we will execute this program those many times get the same result because
+		//the incrementCounter method in Counter class is synchronized
 	}
 }
 
@@ -29,11 +29,10 @@ class MyThread extends Thread {
 		this.counter = counter;
 	}
 	
-	//without synchronization
 	@Override
 	public void run() {
 		for(int i=0; i<1000; i++) {
-			counter.incrementCounter(); //two threads are calling this so we will get the counter value as 2000 but we won't get because it is sharable
+			counter.incrementCounter(); //now we will get consistent values
 		}
 	}
 }
@@ -42,7 +41,8 @@ class Counter {
 	
 	private int counter = 0;
 	
-	public void incrementCounter() {
+	//with synchronization
+	public synchronized void incrementCounter() { //only one thread is allowed to call/operate this method at a time
 		counter++;
 	}
 	
