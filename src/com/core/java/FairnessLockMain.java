@@ -6,12 +6,12 @@ import java.util.concurrent.locks.ReentrantLock;
 public class FairnessLockMain {
 
 	public static void main(String[] args) {
-		FairnessLock unfair = new FairnessLock();
+		FairnessLock fairness = new FairnessLock();
 		Runnable task = new Runnable() {
 			
 			@Override
 			public void run() {
-				unfair.accessResource();
+				fairness.accessResource();
 			}
 		};
 		
@@ -29,10 +29,10 @@ public class FairnessLockMain {
 
 class FairnessLock{
 	
-	private final Lock unfair = new ReentrantLock(); //without fairness/order i.e. threads will execute random order
+	private final Lock fairnessLock = new ReentrantLock(true); //with fairness/order now threads will execute sequential order
 	
 	public void accessResource() {
-		unfair.lock();
+		fairnessLock.lock();
 		try {
 			System.out.println(Thread.currentThread().getName() + " aquired the lock");
 			Thread.sleep(1000);
@@ -40,7 +40,7 @@ class FairnessLock{
 			Thread.currentThread().interrupt();
 		}finally {
 			System.out.println(Thread.currentThread().getName() + " released the lock");
-			unfair.unlock();
+			fairnessLock.unlock();
 		}
 	}
 }
