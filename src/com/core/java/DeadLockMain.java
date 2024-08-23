@@ -53,7 +53,7 @@ class Task1 implements Runnable {
 
 	@Override
 	public void run() {
-		pen.writeWithPenAndPaper(paper); //thread1 locks pen and tries to lock paper
+		pen.writeWithPenAndPaper(paper); //thread1 locks pen and tries to lock paper and it will get the lock for paper because thread2 is will not run until getting the lock of pen and then paper
 	}
 	
 }
@@ -70,6 +70,8 @@ class Task2 implements Runnable {
 
 	@Override
 	public void run() {
-		paper.writeWithPaperAndPen(pen); //thread2 locks paper and tries to lock pen
+		synchronized (pen) {
+			paper.writeWithPaperAndPen(pen); //here, thread2 will not get the lock for paper until it will get the lock for pen
+		}
 	}
 }
