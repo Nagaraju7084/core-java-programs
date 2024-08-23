@@ -30,6 +30,7 @@ public class FairnessLockMain {
 class FairnessLock{
 	
 	private final Lock fairnessLock = new ReentrantLock(true); //with fairness/order now threads will execute sequential order
+	//and also each thread will get the chance to acquire the lock compulsory 
 	
 	public void accessResource() {
 		fairnessLock.lock();
