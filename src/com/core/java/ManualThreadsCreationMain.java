@@ -4,18 +4,30 @@ public class ManualThreadsCreationMain {
 
 	public static void main(String[] args) {
 		long startTime = System.currentTimeMillis();
+		Thread[] threads = new Thread[9];
 		for(int i=1; i<10; i++) {
 			//now using multi threading
 			int finalI = i;
-			Thread thread = new Thread(
+			threads[i-1] = new Thread(
 					()->{
 						long result = factorial(finalI);
 						System.out.println(result);
 					}
 				);
-			thread.start(); //here, one thread is created along with main thread
+			threads[i-1].start(); //10 threads along with main
 		}
-		System.out.println("total time taken for execution : " + (System.currentTimeMillis() - startTime)); //main is not waiting because we won't call join method on thread so we got incorrect result
+		
+		for(Thread thread : threads) {
+			try {
+				thread.join();
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+			}
+		}
+		System.out.println("total time taken for execution : " + (System.currentTimeMillis() - startTime)); //now main thread should wait until completion of all child threads and now we will get correct result
+		//without multi threading the time consumed for the execution is 9 seconds
+		//with multi threading  the time consumed for the execution is 1 second
+		//this is manual thread creation and execution
 	}
 	
 	private static long factorial(int n) {
