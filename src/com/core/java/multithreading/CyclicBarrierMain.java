@@ -1,5 +1,6 @@
 package com.core.java.multithreading;
 
+import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
@@ -11,35 +12,56 @@ public class CyclicBarrierMain {
 
 	public static void main(String[] args) throws InterruptedException, ExecutionException {
 		
-		//cyclicbarrier
-		int numberOfServices = 3;
-		ExecutorService executorService = Executors.newFixedThreadPool(numberOfServices);
-		CyclicBarrier barrier = new CyclicBarrier(numberOfServices);
-		executorService.submit(new WorkerService(barrier));
-		executorService.submit(new WorkerService(barrier));
-		executorService.submit(new WorkerService(barrier));
+		//cyclicbarrier complex program
+		int numberOfSubsystems = 4;
+		CyclicBarrier barrier = new CyclicBarrier(numberOfSubsystems, new Runnable() {
+			
+			@Override
+			public void run() { //line 2 : this will execute after all threads come together at a certain point / place
+				System.out.println("all subsystems are up and running. system startup complete...");
+			}
+		});
 		
-		System.out.println("main..."); //main should not wait here to complete all the worker threads job because all threads to reach certain point for the execution
-		executorService.shutdown();
+		Thread webServerThread = new Thread(new Subsystem("web server", 2000, barrier));
+		Thread databaseThread = new Thread(new Subsystem("database", 4000, barrier));
+		Thread cacheThread = new Thread(new Subsystem("cache", 3000, barrier));
+		Thread messagingServiceThread = new Thread(new Subsystem("messaging service", 3500, barrier));
+		
+		webServerThread.start();
+		databaseThread.start();
+		cacheThread.start();
+		messagingServiceThread.start();
+		
 	}
 
 }
 
-class WorkerService implements Callable<String> {
+class Subsystem implements Runnable {
+	
+	private String name;
+	
+	private int intializationTime;
 
 	private final CyclicBarrier barrier;
 	
-	public WorkerService(CyclicBarrier barrier) {
+	public Subsystem(String name, int intializationTime, CyclicBarrier barrier) {
+		this.name = name;
+		this.intializationTime = intializationTime;
 		this.barrier = barrier;
 	}
 
 	@Override
-	public String call() throws Exception {
-		System.out.println(Thread.currentThread().getName() + " service started...");
-		Thread.sleep(1000);
-		System.out.println(Thread.currentThread().getName() + " is waiting at the barrier ");
-		barrier.await(); //wait until all threads reached to certain point
-		return "ok";
+	public void run() {
+		try {
+			System.out.println(name + "intialization started...");
+			Thread.sleep(intializationTime); //simulate time taken to initialize
+			System.out.println(name + "intialization complete...");
+			barrier.await(); //line 1 : all threads come to certain point / place then line 2 will execute
+		}catch(InterruptedException | BrokenBarrierException e) {
+			e.printStackTrace();
+		}
 	}
+	
+	
 	
 }
