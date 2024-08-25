@@ -18,7 +18,6 @@ public class VolatileAtomicMain {
 		
 		writerThread.start();
 		readerThread.start();
-		
 	}
 
 }
@@ -32,7 +31,7 @@ class SharedObject {
 		System.out.println("writer thread made the falg as true...");
 		flag = true;
 	}
-	
+
 	//reader
 	public void printIfFlagTrue() {
 		while(!flag) { //line 2 : reader thread will enter into loop when line 1 writer thread will pause its execution for one second
@@ -40,8 +39,8 @@ class SharedObject {
 		}
 		System.out.println("reader thread reading the flag..."); //line 3 : after one second, writer thread update the flag as true but reader thread will not read the update value, it doesn't know the updated state of the falg
 		//because the flag variable is from ram but each thread will maintain its own local cache i.e. reader thread will maintain its own local memory for flag and the values is false i.e. before writer thread execution
-		//reader thread will execute and read the flag falue and store it into its local cache i.e. false
+		//reader thread will execute and read the flag value and store it into its local cache i.e. false
 		//after, the flag value is updated by the writer thread is not available to the reader thread
-		//the updated flag value is in writer's thread local cache value but not reflect to the reader thread or ram memory
+		//the updated flag value not reflect to the reader thread rather the value reflect on ram memory
 	}
 }
