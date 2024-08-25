@@ -2,22 +2,41 @@ package com.core.java.multithreading;
 
 public class VolatileAtomicMain {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		
-		SharedObject sharedObject = new SharedObject();
+//		SharedObject sharedObject = new SharedObject();
+//		
+//		Thread writerThread = new Thread(() -> {
+//			try {
+//				Thread.sleep(1000); //line 1 : writer thread should sleep for 1 second as reader thread should enter into loop as line 2 
+//			} catch (InterruptedException e) {
+//				Thread.currentThread().interrupt();
+//			}
+//			sharedObject.setFlagTrue();
+//		});
+//		Thread readerThread = new Thread(() -> sharedObject.printIfFlagTrue());
+//		
+//		writerThread.start();
+//		readerThread.start();
 		
-		Thread writerThread = new Thread(() -> {
-			try {
-				Thread.sleep(1000); //line 1 : writer thread should sleep for 1 second as reader thread should enter into loop as line 2 
-			} catch (InterruptedException e) {
-				Thread.currentThread().interrupt();
+		VolatileCounter volatileCounter = new VolatileCounter();
+		Thread writerThread1 = new Thread(() -> {
+					for(int i=0; i<1000; i++) {
+						volatileCounter.incrementCounter();
+					}
+				});
+		Thread writerThread2 = new Thread(() -> {
+			for(int i=0; i<1000; i++) {
+				volatileCounter.incrementCounter();
 			}
-			sharedObject.setFlagTrue();
 		});
-		Thread readerThread = new Thread(() -> sharedObject.printIfFlagTrue());
 		
-		writerThread.start();
-		readerThread.start();
+		writerThread1.start();
+		writerThread2.start();
+		writerThread1.join();
+		writerThread2.join();
+		
+		System.out.println(volatileCounter.getCounter());
 	}
 
 }
@@ -44,4 +63,18 @@ class SharedObject {
 		//after, the flag value is updated by the writer thread is not available to the reader thread
 		//the updated flag value not reflect to the reader thread rather the value reflect on ram memory
 	}
+}
+
+class VolatileCounter {
+	
+	private volatile int counter = 0; //here, volatile is not working because volatile will reflect the state of the object or value of the variable to the other threads but here, problem is different multiple threads accessing counter variable
+	
+	public void incrementCounter() {
+		counter++;
+	}
+	
+	public int getCounter() {
+		return counter;
+	}
+	
 }
