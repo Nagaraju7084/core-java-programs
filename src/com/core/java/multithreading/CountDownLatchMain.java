@@ -1,26 +1,29 @@
 package com.core.java.multithreading;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 public class CountDownLatchMain {
 
 	public static void main(String[] args) throws InterruptedException, ExecutionException {
 		
-		//problem without countdownlatch
-		ExecutorService executorService = Executors.newFixedThreadPool(3);
-		Future<String> future1 = executorService.submit(new DependentService());
-		Future<String> future2 = executorService.submit(new DependentService());
-		Future<String> future3 = executorService.submit(new DependentService());
+		//with countdownlatch
+		int numberOfServices = 3;
 		
-		future1.get(); //main should wait until complition of future1, future2, future3. here we don't call join method because we are using executor framework
-		future2.get(); //problem is here, main should wait until completion of all dependent services
-		future3.get(); //here, 3 services we wrote 3 times future.get(), if suppose there are many services are there, if write many times future.get() its not good programming, to resolve this use countdownlatch
+		ExecutorService executorService = Executors.newFixedThreadPool(numberOfServices);
 		
-		System.out.println("all dependent services finished. starting main service");
+		CountDownLatch countDownLatch = new CountDownLatch(numberOfServices);
+		
+		executorService.submit(new DependentService(countDownLatch));
+		executorService.submit(new DependentService(countDownLatch));
+		executorService.submit(new DependentService(countDownLatch));
+		
+		countDownLatch.await(); //main should wait until lock release
+		
+		System.out.println("main...");
 		executorService.shutdown(); //if don't call this, keep on executing, so after completion of tasks, it should be call
 		
 	}
@@ -29,10 +32,20 @@ public class CountDownLatchMain {
 
 class DependentService implements Callable<String> {
 
+	private final CountDownLatch latch;
+	
+	public DependentService(CountDownLatch latch) {
+		this.latch = latch;
+	}
+	
 	@Override
 	public String call() throws Exception {
-		System.out.println(Thread.currentThread().getName() + " service started...");
-		Thread.sleep(2000);
+		try {
+			System.out.println(Thread.currentThread().getName() + " service started...");
+			Thread.sleep(2000);
+		}finally {
+			latch.countDown(); //it will decrement for each execution, suppose the count starts with 3, for each iteration it will decrease until 0, once it is 0 then main will execute
+		}
 		return "ok";
 	}
 	
