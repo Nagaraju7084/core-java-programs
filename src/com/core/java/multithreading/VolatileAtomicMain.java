@@ -1,5 +1,7 @@
 package com.core.java.multithreading;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class VolatileAtomicMain {
 
 	public static void main(String[] args) throws InterruptedException {
@@ -36,7 +38,8 @@ public class VolatileAtomicMain {
 		writerThread1.join();
 		writerThread2.join();
 		
-		System.out.println(volatileCounter.getCounter());
+		System.out.println(volatileCounter.getCounter()); //here, we will get expected value how many times we will run the programs without locks, without synchronization by using only atomic
+		//this is called thread safty
 	}
 
 }
@@ -67,14 +70,15 @@ class SharedObject {
 
 class VolatileCounter {
 	
-	private volatile int counter = 0; //here, volatile is not working because volatile will reflect the state of the object or value of the variable to the other threads but here, problem is different multiple threads accessing counter variable
+	//private volatile int counter = 0; //here, volatile is not working because volatile will reflect the state of the object or value of the variable to the other threads but here, problem is different multiple threads accessing counter variable
+	private AtomicInteger counter = new AtomicInteger(0); //to solve the problem, use atomic without using any lock, but volatile will not work here
 	
 	public void incrementCounter() {
-		counter++;
+		counter.incrementAndGet();
 	}
 	
 	public int getCounter() {
-		return counter;
+		return counter.get();
 	}
 	
 }
