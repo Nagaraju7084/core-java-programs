@@ -24,7 +24,8 @@ public class VolatileAtomicMain {
 
 class SharedObject {
 	
-	private boolean flag = false;
+	//private boolean flag = false; //shared value one thread is updating the other thread is reading
+	private volatile boolean flag = false; //if we make it volatile the updated value is reflect for all threads i.e. state is same for all threads
 	
 	//writer
 	public void setFlagTrue() {
