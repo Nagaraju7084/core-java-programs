@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -347,6 +348,38 @@ public class AllCodingProblems {
 				.mapToObj(c -> (char)c)
 				.collect(Collectors.toList());
 		System.out.println(uniqueChars);
+		
+		//using java7
+		//String str = "abcddeff";
+		
+		Set<Character> charSet = new LinkedHashSet<>();
+		List<Character> duplicate = new ArrayList<>();
+		for(char c : str.toCharArray()) {
+			if(!charSet.add(c)) {
+				duplicate.add(c);
+			}
+		}
+		
+		System.out.println(charSet);
+		System.out.println(duplicate);
+		
+		for(char ch : duplicate) {
+			if(charSet.contains(ch)) {
+				charSet.remove(ch);
+			}
+		}
+		System.out.println(charSet);
+		
+		//using java8
+		Set<Character> setOfChars = str.chars().mapToObj(i -> (char)i).collect(Collectors.toSet());
+		System.out.println("========using java8===========");
+		
+		Set<Character> duplicateChars = str.chars().mapToObj(i -> (char)i).filter(e -> str.indexOf(e) != str.lastIndexOf(e)).collect(Collectors.toSet());
+		System.out.println(setOfChars);
+		System.out.println(duplicateChars);
+
+		duplicateChars.forEach(setOfChars::remove);
+		System.out.println(setOfChars);
 	}
 
 	public static void findTheMostBookedRooms() {
