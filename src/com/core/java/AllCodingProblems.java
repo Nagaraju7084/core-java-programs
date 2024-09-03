@@ -70,12 +70,12 @@ public class AllCodingProblems {
 		//findMaxElementFromArray();
 		//findAverageFromArray();
 		//findNumberOfOccurencesOfElementInArray();
-		//findProfitOfStocks();
+		findProfitOfStocks();
 		//joiningStringsInList();
 		//summingNnumbers();
 		//sortListInAscendingAndDescendingOrderAndFindMaxNumber();
 		//averageMarksOfStudentFrom2dArray();
-		searchGivenStringBasedOnCharactersGivenInTheDropdown();
+		//searchGivenStringBasedOnCharactersGivenInTheDropdown();
 		
 	}
 	

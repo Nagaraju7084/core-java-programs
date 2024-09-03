@@ -2,7 +2,7 @@ package com.core.dsalgothroughjava;
 
 import java.util.Random;
 
-public class MergeSortMain {
+public class MergeSortRecursionMain {
 
 	public static void main(String[] args) {
 		
