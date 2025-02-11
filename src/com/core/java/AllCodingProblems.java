@@ -70,15 +70,23 @@ public class AllCodingProblems {
 		//findMaxElementFromArray();
 		//findAverageFromArray();
 		//findNumberOfOccurencesOfElementInArray();
-		findProfitOfStocks();
+		//findProfitOfStocks();
 		//joiningStringsInList();
 		//summingNnumbers();
 		//sortListInAscendingAndDescendingOrderAndFindMaxNumber();
 		//averageMarksOfStudentFrom2dArray();
 		//searchGivenStringBasedOnCharactersGivenInTheDropdown();
+		findSecondHighestElementFromList();
 		
 	}
 	
+	private static void findSecondHighestElementFromList() {
+		List<Integer> list = Arrays.asList(1,4,7,3,8,2);
+		int second = list.stream().sorted((a,b) -> b.compareTo(a)).skip(1).findAny().get();
+		System.out.println("second highest element = "+ second);
+		
+	}
+
 	private static void searchGivenStringBasedOnCharactersGivenInTheDropdown() {
 		//camera, mobile, charger, laptop, keyboard, mouse, computer, coocker, calculator
 		//if type c in dropdown only at most 3 products start with c will come and those are in lexicographical order
@@ -195,7 +203,7 @@ public class AllCodingProblems {
 	}
 
 	private static void findNumberOfOccurencesOfElementInArray() {
-		//if a number present in the array more than once, print that number allong with its occurences in the array
+		//if a number present in the array more than once, print that number along with its occurences in the array
 		int[] intArr = {7, 3, 6, 2, 2, 2, 1, 8};
 		int count = 0;
 		int repeatedNumber = 0;
@@ -209,6 +217,11 @@ public class AllCodingProblems {
 		}
 		System.out.println("repeatedNumber = " + repeatedNumber);
 		System.out.println("count = " + count);
+		
+		//java8
+		Map<Integer, Long> frequencyMap = Arrays.stream(intArr).boxed().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+		frequencyMap.entrySet().stream().filter(entry -> entry.getValue() > 1)
+		.forEach(entry -> System.out.println("repeated number = " + entry.getKey() + "\tcount = " + entry.getValue()));
 	}
 
 	private static void findAverageFromArray() {
@@ -223,6 +236,13 @@ public class AllCodingProblems {
 		System.out.println("count of elements : " + intArr.length);
 		int average = sum / intArr.length;
 		System.out.println("average of elements : " + average);
+		
+		//java8
+		List<Integer> listOfints = Arrays.asList(7, 3, 6, 2, 1, 8);
+		int sumV = listOfints.stream().collect(Collectors.summingInt(Integer::intValue));
+		Long countV = listOfints.stream().collect(Collectors.counting());
+		Long avgV = sumV / countV;
+		System.out.println("avgV using java8 = " + avgV);
 	}
 
 	private static void findMaxElementFromArray() {
@@ -243,7 +263,7 @@ public class AllCodingProblems {
 		int min = Integer.MAX_VALUE;
 		int i=0;
 		while(i < intArr.length) {
-			if(min > intArr[i]) {
+			if(intArr[i] < min) {
 				min = intArr[i];
 			}
 			i++;
@@ -419,7 +439,6 @@ public class AllCodingProblems {
 			sum = sum + n;
 		}
 		System.out.println(sum);
-		
 		//using java8 sum() funtion of IntStream
 		long summation = intList.stream().filter(n -> n % 2 == 0).mapToInt(Integer::intValue).sum();
 		System.out.println(summation);
