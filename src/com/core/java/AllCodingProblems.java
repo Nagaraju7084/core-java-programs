@@ -67,7 +67,7 @@ public class AllCodingProblems {
 		//findEvenNumbersAndAddFromList();
 		//findTheMostBookedRooms();
 		//findMinElementFromArray();
-		//findMaxElementFromArray();
+		findMaxElementFromArray();
 		//findAverageFromArray();
 		//findNumberOfOccurencesOfElementInArray();
 		//findProfitOfStocks();
@@ -76,7 +76,7 @@ public class AllCodingProblems {
 		//sortListInAscendingAndDescendingOrderAndFindMaxNumber();
 		//averageMarksOfStudentFrom2dArray();
 		//searchGivenStringBasedOnCharactersGivenInTheDropdown();
-		findSecondHighestElementFromList();
+		//findSecondHighestElementFromList();
 		
 	}
 	
@@ -256,6 +256,10 @@ public class AllCodingProblems {
 			i++;
 		}
 		System.out.println("max element : " + max);
+		
+		//using java8
+		int maxElement = Arrays.stream(intArr).max().getAsInt();
+		System.out.println("maxElement using java8 = " + maxElement);
 	}
 
 	private static void findMinElementFromArray() {
@@ -269,6 +273,10 @@ public class AllCodingProblems {
 			i++;
 		}
 		System.out.println("min element : " + min);
+		
+		//using java8
+		int minElement = Arrays.stream(intArr).min().getAsInt();
+		System.out.println("minElement using java8 = " + minElement);
 	}
 
 	private static void findFirstUniqueCharFromString() {
