@@ -19,23 +19,26 @@ public class BinarySearchEx {
 		
 	}
 
-	private static int binarySearch(int[] intArr, int searchKey) {
-		
+	private static int binarySearch(int[] numbers, int searchElement) {
 		int start = 0;
-		int end = intArr.length-1;
-		
+		int end = numbers.length-1;
 		while(start <= end) {
-			int middle = start + (end - start) / 2;
-			int value = intArr[middle];
-			System.out.println("middle : " + value);
-			if(value < searchKey) 
-				start = middle + 1;
-			else if(value > searchKey) 
-				end = middle - 1;
-			else return middle; //target found
+			int mid = (start + end) / 2;
+			if(searchElement == numbers[mid]) {
+				System.out.println("middle");
+				return mid;
+			}
+			if(searchElement < mid) {
+				end = mid-1;
+			}
+			else if(searchElement > mid) {
+				start = mid + 1;
+			}else {
+				return mid;
+			}
 		}
-		return -1; //target not found
-	}
+		return -1;
+	}	
 
 	private static int binarySearch(int[] intArr, int searchKey, int start, int end) {
 		

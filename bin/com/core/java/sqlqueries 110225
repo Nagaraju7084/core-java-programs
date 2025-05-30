@@ -1,0 +1,17 @@
+Customer table :
+================
+customerId
+lastName
+firstName
+
+
+Order table :
+=============
+orderId
+customerId
+orderDetails
+date
+
+Q).write sql query, find the customer who have not placed any order?
+>select c.customerId, c.firstName, c.lastName from Customer c
+left join Order o on c.customerId = o.customerId where o.customerId is null;

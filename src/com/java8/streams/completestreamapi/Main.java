@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class FilterPersonUsingName {
+public class Main {
 
 	public static void main(String[] args) {
 		
@@ -38,7 +38,7 @@ public class FilterPersonUsingName {
 	
 		//personOperations();
 		//productPriceOperations();
-		bookAndAuthorOperations();
+		//bookAndAuthorOperations();
 		//stringArrayOperations();
 		//intArrayOperations();
 		//generalOperations();
@@ -46,7 +46,7 @@ public class FilterPersonUsingName {
 		//terminalOperations();
 		//shortCircuiteOperations();
 		//calculateSumWithoutStream();
-		//conversionOperations();
+		conversionOperations();
 	
 		//parallelstream operations
 	
@@ -369,7 +369,7 @@ public class FilterPersonUsingName {
 				System.out.println("========Operations on Product and Price Here===================");
 				
 				//get products which are < 20000
-				FilterPersonUsingName filterPersonUsingName = new FilterPersonUsingName();
+				Main filterPersonUsingName = new Main();
 				List<Product> productListByPrice = filterPersonUsingName.getProductsByPrice(productList);
 				System.out.println(productListByPrice);
 				
@@ -671,7 +671,7 @@ public class FilterPersonUsingName {
 				new Person(13, "Martin", 19),
 				new Person(14, "John", 19));
 		
-		FilterPersonUsingName filterPersonUsingName = new FilterPersonUsingName(); 
+		Main filterPersonUsingName = new Main(); 
 		Person person = filterPersonUsingName.getPersonByName(listOfPersons, "Steven");
 		System.out.println(person);
 		
@@ -730,15 +730,16 @@ public class FilterPersonUsingName {
 				);
 				
 		System.out.println("========Operations on Book and Author Here===================" + bookList);
+		//finding author names and convert to uppercase and whose age is >= 30 and print unique authors only 2 authors
 		 List<String> filteredAuthorNames = bookList.stream() //stream of book
 				 							.map(Book::getAuthor) //stream<Book> to stream<Author>
-											.filter(a -> a.getAge() >= 30) //filter author who's age is >= 30
-											.map(Author::getName) //stream<Author> to steam<Name>
-											.map(String::toUpperCase) //convert name as upper case
+				 							.filter(a -> a.getAge() >= 30) //filter author who's age is >= 30
+											.map(Author::getName) //stream<Author> to steam<String(Name)>
+											.map(String::toUpperCase) //stream<String> to stream<Obect> convert name to upper case
 											.distinct() //get the unique elements meaning without duplicates
 											.limit(2) // grab the first two records
 											.collect(Collectors.toList()); //collect the result as list
-		 System.out.println(filteredAuthorNames);
+		 System.out.println("filtered authors:\t" + filteredAuthorNames);
 		 
 		 //sum of ages of all male authors younger than 50
 		 Integer sumOfMaleAuthorAges = 

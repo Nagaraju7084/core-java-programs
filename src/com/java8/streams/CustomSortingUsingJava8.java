@@ -19,11 +19,11 @@ public class CustomSortingUsingJava8 {
 		emp1.setSalary(2000);
 		
 		Employee emp2 = new Employee();
-		emp2.setName("akahs");
+		emp2.setName("james");
 		emp2.setSalary(4000);
 		
 		Employee emp3 = new Employee();
-		emp3.setName("akahs");
+		emp3.setName("akash");
 		emp3.setSalary(4000);
 		
 		List<Employee> empList = new ArrayList<Employee>();
@@ -32,23 +32,24 @@ public class CustomSortingUsingJava8 {
 		empList.add(emp2);
 		empList.add(emp3);
 		
-		System.out.println("empList = "+empList);
+		System.out.println("empList before sorting:\t "+empList);
 		
+		
+		//
 		List<Employee> sortedList = empList
 			.stream()
-			.sorted(
-					Comparator.comparing(Employee::getSalary)
-					.thenComparing(Comparator.comparing(Employee::getName))
-					)
+			.sorted(Comparator.comparing(Employee::getSalary)//comparing salary first if two employees having same salary then
+					.thenComparing(Comparator.comparing(Employee::getName)))//comparing by names
 			.collect(Collectors.toList());
 	
+		System.out.println("sorted list:\t "+sortedList);
 		sortedList.forEach(System.out::println);
 		
 		Set set = new HashSet<>();
 		List<Employee> distinctNames = empList.stream().filter(e -> set.add(e.getName()))
 										.collect(Collectors.toList());
-		System.out.println("distinctNames = "+distinctNames);
-		Employee emp = empList.stream().max(Comparator.comparing(Employee::getSalary)).get();
+		System.out.println("distinctNames = "+distinctNames);//distinct / unique names
+		Employee emp = empList.stream().max(Comparator.comparing(Employee::getSalary)).get();//max salary
 		System.out.println(emp.getSalary() +":"+ emp.getName());
 		
 		Map<Integer, Employee2> empMap = new HashMap<>();
