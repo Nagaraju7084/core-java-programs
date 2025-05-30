@@ -321,11 +321,8 @@ public class AllCodingProblemsInterviewCoding180525 {
 
 	private static void oddFirstThenEvenFromArray() {
 		int[] intArr = { 1, 2, 7, 10, 6, 3, 12, 5 };
-		Map<Boolean, List<Integer>> resultMap = IntStream.of(intArr).boxed()
-				.collect(Collectors.partitioningBy(i -> i % 2 != 0, Collectors.toList()));
-		// print odd first then even
-		System.out.println("odd:\t" + resultMap.get(true));
-		System.out.println("even:\t" + resultMap.get(false));
+		Map<Boolean, List<Integer>> resultMap = Arrays.stream(intArr).mapToObj(is -> (int)is).collect(Collectors.partitioningBy(n -> n % 2 == 0));
+		System.out.println("resultMap:\t" + resultMap);
 	}
 
 	private static void missingLetterAndMissingNumber() {
